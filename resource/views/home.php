@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body class="bg-gray-100 font-sans">
-
+    <header>
+        <?php include __DIR__ . "/components/navbar.php"; ?>
+    </header>
     <div class="max-w-4xl mx-auto py-10">
         <div class="flex justify-end mb-6">
             <form action="/logout" method="GET">
@@ -18,7 +20,7 @@
                 </button>
             </form>
         </div>
-        
+
         <h1 class="text-4xl font-bold text-center mb-8 text-blue-600">Forum Diskusi</h1>
 
         <?php foreach ($posts as $post): ?>
@@ -65,6 +67,7 @@
         <?php endforeach; ?>
 
     </div>
-
+    
+        <?php include __DIR__ . "/components/footer.php"; ?>
 </body>
 </html>
