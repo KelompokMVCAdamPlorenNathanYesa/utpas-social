@@ -17,11 +17,11 @@
       </a>
       <a href="/forum" class="hover:text-yellow-400 flex flex-col items-center <?= activeClass('/forum') ?>">
         <i class="bi bi-chat-dots-fill"></i>
-        <span class="text-sm mt-1">Forum</span>
+        <span class="text-sm mt-1">Prodi</span>
       </a>
       <a href="/gallery" class="hover:text-yellow-400 flex flex-col items-center <?= activeClass('/gallery') ?>">
-        <i class="bi bi-images"></i>
-        <span class="text-sm mt-1">Gallery</span>
+        <i class="bi bi-megaphone-fill"></i>
+        <span class="text-sm mt-1">Pengumuman</span>
       </a>
     </div>
 

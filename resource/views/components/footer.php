@@ -66,7 +66,7 @@
   <!-- Copyright & Social Media -->
   <div class="border-t border-gray-700 mt-10 py-4">
     <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-      <p class="text-sm mb-4 md:mb-0">Hak cipta © <?= date('Y'); ?> <a href="https://utpas.ac.id" class="hover:text-yellow-400">Universitas Utpadaka Swastika</a>.</p>
+      <p class="text-sm mb-4 md:mb-0">Hak cipta © <?= date('Y'); ?> <a href="https://utpas.ac.id" class="hover:text-yellow-400">Kelompok Satu</a>.</p>
       <div class="flex space-x-4 text-xl">
         <a href="https://www.facebook.com/utpas.ac.id" class="hover:text-yellow-400"><i class="bi bi-facebook"></i></a>
         <a href="https://twitter.com/CampusLEPISI" class="hover:text-yellow-400"><i class="bi bi-twitter"></i></a>
