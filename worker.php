@@ -83,3 +83,25 @@ class Route {
         }
     }
 }
+
+class Middleware
+{
+    public static function auth()
+    {
+        // kalo blom login nggak boleh ke mana mana > kalo maksa redirect ke /login
+
+        session_start();
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+    }
+    public static function guest()
+    {
+        session_start();
+        if (isset($_SESSION['user'])) {
+            header('Location: /');
+            exit;
+        }
+    }
+}
