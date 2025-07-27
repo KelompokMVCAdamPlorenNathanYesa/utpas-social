@@ -11,6 +11,14 @@
 <body class="bg-gray-100 font-sans">
 
     <div class="max-w-4xl mx-auto py-10">
+        <div class="flex justify-end mb-6">
+            <form action="/logout" method="GET">
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 flex items-center gap-2">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </form>
+        </div>
+        
         <h1 class="text-4xl font-bold text-center mb-8 text-blue-600">Forum Diskusi</h1>
 
         <?php foreach ($posts as $post): ?>

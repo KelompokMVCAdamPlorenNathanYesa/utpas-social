@@ -56,7 +56,45 @@ class Model {
         return $objects;
     }
 
+    public static function find($id) {
+        $instance = new static();
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$instance->table}` WHERE id = :id LIMIT 1");
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
+    public static function where($column, $value) {
+        $instance = new static();
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$instance->table}` WHERE `$column` = :value");
+        $stmt->execute(['value' => $value]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function create($data) {
+        $instance = new static();
+        $columns = array_keys($data);
+        $placeholders = array_map(fn($col) => ":$col", $columns);
+        $sql = "INSERT INTO `{$instance->table}` (" . implode(", ", $columns) . ")
+                VALUES (" . implode(", ", $placeholders) . ")";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute($data);
+        return self::$pdo->lastInsertId();
+    }
+
+    public static function update($id, $data) {
+        $instance = new static();
+        $fields = implode(", ", array_map(fn($col) => "`$col` = :$col", array_keys($data)));
+        $sql = "UPDATE `{$instance->table}` SET $fields WHERE id = :id";
+        $data['id'] = $id;
+        $stmt = self::$pdo->prepare($sql);
+        return $stmt->execute($data);
+    }
+
+    public static function delete($id) {
+        $instance = new static();
+        $stmt = self::$pdo->prepare("DELETE FROM `{$instance->table}` WHERE id = :id");
+        return $stmt->execute(['id' => $id]);
+    }
 
     public static function getPdo() {
         return self::$pdo;
