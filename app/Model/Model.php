@@ -9,8 +9,7 @@ class Model {
         if (!self::$pdo) {
             $this->connect();
         }
-        // ex: class post table posts 
-        
+
         if (!$this->table) {
             $this->table = strtolower(get_class($this)) . 's';
         }
@@ -18,9 +17,6 @@ class Model {
         $this->loadColumns();
     }
 
-    /**
-     * Connect ke database SQLite
-     */
     protected function connect() {
         $dbPath = realpath(__DIR__ . '/../../database/database.db');
 
@@ -33,36 +29,52 @@ class Model {
         self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    /**
-     * Load nama-nama kolom dari tabel
-     */
     protected function loadColumns() {
         $stmt = self::$pdo->prepare("PRAGMA table_info(`{$this->table}`);");
         $stmt->execute();
-
         $this->columns = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'name');
     }
 
-    /**
-     * Ambil semua nama kolom
-     */
     public function getColumns() {
         return $this->columns;
     }
 
-    /**
-     * Ambil semua data dari tabel
-     */
-    public function all() {
-        $stmt = self::$pdo->prepare("SELECT * FROM `{$this->table}`");
+    public static function all() {
+        $instance = new static();
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$instance->table}`");
         $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $objects = [];
+        foreach ($results as $row) {
+            $obj = new static();
+            foreach ($row as $key => $value) {
+                $obj->$key = $value;
+            }
+            $objects[] = $obj;
+        }
+        return $objects;
+    }
+
+
+
+    public static function getPdo() {
+        return self::$pdo;
+    }
+
+    // Relasi One-to-Many
+    public function hasMany($relatedClass, $foreignKey, $localKey = 'id') {
+        $related = new $relatedClass;
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$related->table}` WHERE `$foreignKey` = :value");
+        $stmt->execute(['value' => $this->$localKey]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Dapatkan instance PDO
-     */
-    public static function getPdo() {
-        return self::$pdo;
+    // Relasi Many-to-One
+    public function belongsTo($relatedClass, $foreignKey, $ownerKey = 'id') {
+        $related = new $relatedClass;
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$related->table}` WHERE `$ownerKey` = :value LIMIT 1");
+        $stmt->execute(['value' => $this->$foreignKey]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
