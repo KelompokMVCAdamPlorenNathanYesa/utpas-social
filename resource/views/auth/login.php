@@ -1,3 +1,9 @@
+<?php
+// Pindahkan session_start() ke baris paling atas
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +17,7 @@
             background-size: cover;
         }
         .overlay {
-            background-color: rgba(88, 28, 135, 0.8);
+            background-color: rgba(14, 9, 18, 0.8);
         }
     </style>
 </head>

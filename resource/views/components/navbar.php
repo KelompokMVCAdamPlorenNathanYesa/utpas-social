@@ -3,13 +3,11 @@
 <nav class="bg-purple-800 text-white shadow-md">
   <div class="max-w-6xl mx-auto px-4 flex justify-between items-center h-19">
 
-    <!-- Logo -->
     <div class="flex items-center space-x-3">
       <img src="/resource/img/logo-utpas.png" class="h-14" alt="Logo UTPAS">
       <span class="font-bold text-2xl sm:block">UTPAS Social</span>
     </div>
 
-    <!-- Menu Tengah (Desktop) -->
     <div class="hidden sm:flex space-x-10 text-3xl">
       <a href="/" class="hover:text-yellow-400 flex flex-col items-center <?= activeClass('/') ?>">
         <i class="bi bi-house-door-fill"></i>
@@ -23,9 +21,10 @@
         <i class="bi bi-megaphone-fill"></i>
         <span class="text-sm mt-1">Pengumuman</span>
       </a>
+      <a href="/group-finder" class="hover:text-yellow-400 font-semibold p-2 rounded-lg">Rekan Kelompok</a>
+      <a href="/learning-resources" class="hover:text-yellow-400 font-semibold p-2 rounded-lg">Sumber Belajar</a>
     </div>
 
-    <!-- Profile (Desktop) -->
     <div class="hidden sm:block relative">
       <button id="profileBtn" class="focus:outline-none flex items-center space-x-3">
         <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold text-lg flex items-center justify-center">
@@ -45,7 +44,6 @@
       </div>
     </div>
 
-    <!-- Hamburger (Mobile Only) -->
     <div class="sm:hidden">
       <button id="menuBtn" class="text-4xl focus:outline-none">
         <i class="bi bi-list"></i>
@@ -53,7 +51,6 @@
     </div>
   </div>
 
-  <!-- Mobile Menu -->
   <div id="mobileMenu" class="hidden sm:hidden bg-purple-700 text-white px-6 py-4 space-y-4 text-xl">
     <a href="/" class="block hover:text-yellow-400 <?= activeClass('/') ?>"><i class="bi bi-house-door-fill me-2"></i> Home</a>
     <a href="/forum" class="block hover:text-yellow-400 <?= activeClass('/forum') ?>"><i class="bi bi-chat-dots-fill me-2"></i> Forum</a>
@@ -75,19 +72,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const profileBtn = document.getElementById('profileBtn');
   const profileDropdown = document.getElementById('profileDropdown');
 
-  // Toggle mobile menu
   menuBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     mobileMenu.classList.toggle('hidden');
   });
 
-  // Toggle profile dropdown (desktop)
   profileBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     profileDropdown.classList.toggle('hidden');
   });
 
-  // Klik luar menutup semua dropdown
   document.addEventListener('click', () => {
     profileDropdown?.classList.add('hidden');
     mobileMenu?.classList.add('hidden');
