@@ -51,8 +51,9 @@ class AuthController extends Controller
         $fakultas = trim($_POST['fakultas'] ?? '');
         $prodi = trim($_POST['prodi'] ?? '');
         $password = trim($_POST['password'] ?? '');
+        $status = trim($_POST['status'] ?? '');
 
-        if (!$name || !$username || !$email || !$password || !$unique_number) {
+        if (!$name || !$username || !$email || !$password || !$unique_number || !$fakultas || !$prodi || !$status) { // Ditambahkan `$status`
             $_SESSION['error'] = 'Semua field wajib diisi!';
             header('Location: /register');
             exit;
@@ -66,7 +67,6 @@ class AuthController extends Controller
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $status = 'active';
 
         User::create([
             'name' => $name,

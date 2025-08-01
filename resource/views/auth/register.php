@@ -39,6 +39,12 @@
                 class="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
             <input type="text" name="prodi" placeholder="Program Studi"
                 class="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <select name="status" class="col-span-2 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <option value="" disabled selected>Pilih Status</option>
+                    <option value="mahasiswa">Mahasiswa</option>
+                    <option value="dosen">Dosen</option>
+                    <option value="admin">Admin</option>
+                </select>
             <input type="password" name="password" placeholder="Password"
                 class="col-span-2 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
 

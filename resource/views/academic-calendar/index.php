@@ -4,7 +4,6 @@ if (!isset($_SESSION['user'])) {
     header('Location: /login');
     exit();
 }
-// Asumsi variabel $events sudah di-set dari controller
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +22,7 @@ if (!isset($_SESSION['user'])) {
     <main class="max-w-4xl mx-auto py-8 px-4">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-purple-800">Kalender Akademik</h1>
-            <?php if ($_SESSION['user']['status'] === 'admin'): ?>
+            <?php if ($_SESSION['user']['status'] === 'admin' || $_SESSION['user']['status'] === 'dosen'): ?>
                 <a href="/academic-calendar/create" class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-yellow-400 hover:text-purple-800 transition-colors duration-300">
                     <i class="bi bi-plus-circle-fill mr-2"></i> Tambah Acara
                 </a>
@@ -33,6 +32,11 @@ if (!isset($_SESSION['user'])) {
         <?php if (isset($_SESSION['success'])): ?>
             <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-4">
                 <?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-4">
+                <?= htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?>
             </div>
         <?php endif; ?>
 
@@ -75,32 +79,8 @@ if (!isset($_SESSION['user'])) {
                         <?php endif; ?>
 
                         <?php if (!empty($event->contact_info)): ?>
-                            <div class="mt-2 text-sm text-gray-600 flex items-center">
-                                <i class="bi bi-info-circle mr-1"></i>
-                                <span class="font-semibold mr-1">Kontak/Info:</span>
-                                <?php
-                                    // Cek jika formatnya email
-                                    if (filter_var($event->contact_info, FILTER_VALIDATE_EMAIL)) {
-                                        $link = "mailto:" . $event->contact_info;
-                                        $text = $event->contact_info;
-                                    }
-                                    // Jika tidak, cek jika formatnya adalah nomor telepon (misal: 0812...)
-                                    else if (preg_match('/^\d{10,13}$/', str_replace(' ', '', $event->contact_info))) {
-                                        $link = "https://wa.me/" . preg_replace('/^0/', '62', str_replace(' ', '', $event->contact_info));
-                                        $text = $event->contact_info;
-                                    }
-                                    else {
-                                        $link = null;
-                                        $text = $event->contact_info;
-                                    }
-                                ?>
-                                <?php if ($link): ?>
-                                    <a href="<?= htmlspecialchars($link) ?>" target="_blank" class="text-blue-600 hover:underline">
-                                        <?= htmlspecialchars($text) ?>
-                                    </a>
-                                <?php else: ?>
-                                    <span><?= htmlspecialchars($text) ?></span>
-                                <?php endif; ?>
+                            <div class="mt-2 text-sm text-gray-600">
+                                <i class="bi bi-info-circle mr-1"></i> Metode Pengumpulan: <?= htmlspecialchars($event->contact_info) ?>
                             </div>
                         <?php endif; ?>
 

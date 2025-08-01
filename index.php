@@ -108,7 +108,10 @@ Route::get('/learning-resources', function() use ($learningResourceController) {
     Middleware::auth();
     $learningResourceController->index();
 });
-
+Route::get('/academic-calendar/create', function() use ($academicCalendarController) {
+    Middleware::auth();
+    $academicCalendarController->createForm();
+});
 Route::get('/learning-resources/create', function() use ($learningResourceController) {
     Middleware::auth();
     $learningResourceController->createForm();
