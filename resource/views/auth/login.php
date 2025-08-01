@@ -1,9 +1,9 @@
 <?php
-// Pindahkan session_start() ke baris paling atas
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+if (session_status() === PHP_SESSION_NONE) session_start();
+$error = $_SESSION['error'] ?? null;
+unset($_SESSION['error']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,9 +35,9 @@ if (session_status() == PHP_SESSION_NONE) {
     </div>
 
     <!-- Pesan Error -->
-    <?php session_start(); if (!empty($_SESSION['error'])): ?>
+    <?php if ($error): ?>
         <div class="bg-red-600 text-white p-3 rounded mb-4 text-sm text-center">
-            <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+            <?= $error ?>
         </div>
     <?php endif; ?>
 

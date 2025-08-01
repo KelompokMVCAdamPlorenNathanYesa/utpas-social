@@ -44,6 +44,10 @@ Route::post('/post/like/$id', function($id) use ($postController) {
     $postController->toggleLike($id);
 });
 
+// 
+
+
+
 Route::get('/forum', function() use ($discussionController) {
     Middleware::auth();
     $discussionController->index();

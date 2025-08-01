@@ -51,13 +51,15 @@ CREATE TABLE post_comments (
 -- Tabel Post Likes
 CREATE TABLE post_likes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER    user_id INTEGER,
+    post_id INTEGER,
+    user_id INTEGER,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE(post_id, user_id)
 );
 
+-- Tabel Courses
 CREATE TABLE courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
@@ -70,7 +72,7 @@ CREATE TABLE discussion_threads (
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     user_id INTEGER NOT NULL,
-    course_id INTEGER NOT NUL
+    course_id INTEGER NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
@@ -102,7 +104,31 @@ CREATE TABLE learning_resources (
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE SET NULL
 );
 
--- Data awal (seeding) untuk Learning Resources
+CREATE TABLE group_finder_posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    contact TEXT NOT NULL,
+    course_id INTEGER,
+    user_id INTEGER NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+
+-- Seed awal (kamu bisa sesuaikan ID user & course sesuai data nyata)
+INSERT INTO users (id, name, username, email, status, password, unique_number, fakultas, prodi) VALUES
+(1, 'Adam Wahyu', 'adam', 'adam@example.com', 'active', 'password_hash_1', 'UN001', 'FTI', 'TI'),
+(2, 'Ayu Lestari', 'ayu', 'ayu@example.com', 'active', 'password_hash_2', 'UN002', 'FTI', 'SI'),
+(3, 'Budi Santoso', 'budi', 'budi@example.com', 'active', 'password_hash_3', 'UN003', 'FTI', 'MI');
+
+INSERT INTO courses (id, name, description) VALUES
+(1, 'Pemrograman Web', 'Belajar dasar-dasar PHP & HTML'),
+(2, 'Struktur Data', 'Mengenal struktur data dasar seperti linked list'),
+(3, 'Matematika Kalkulus', 'Turunan dan integral dasar');
+
 INSERT INTO learning_resources (title, description, type, file_path, link_url, course_id, user_id) VALUES
 ('Materi Pertemuan 1 - PHP Dasar', 'Materi PDF untuk pertemuan pertama pemrograman web.', 'file', 'materi-pw1.pdf', NULL, 1, 1),
 ('Studi Kasus Linked List', 'Tautan ke artikel studi kasus implementasi linked list.', 'link', NULL, 'https://medium.com/linked-list-example', 2, 3),
