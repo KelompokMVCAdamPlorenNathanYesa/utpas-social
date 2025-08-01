@@ -1,11 +1,4 @@
-<?php
-session_start();
-if (!isset($_SESSION['user'])) {
-    header('Location: /login');
-    exit();
-}
-// Asumsi variabel $resources sudah di-set dari controller
-?>
+<?php session_start();?>
 
 <!DOCTYPE html>
 <html lang="en">

@@ -7,6 +7,7 @@ require_once "app/Controller/DiscussionController.php";
 require_once "app/Controller/GroupFinderController.php"; 
 require_once "app/Controller/LearningResourceController.php";
 require_once "app/Controller/AcademicCalendarController.php";
+require_once "app/Controller/AnnouncementController.php";
 
 $postController = new PostController();
 $authController = new AuthController();
@@ -14,6 +15,7 @@ $discussionController = new DiscussionController();
 $groupFinderController = new GroupFinderController();
 $learningResourceController = new LearningResourceController();
 $academicCalendarController = new AcademicCalendarController(); 
+$announcementController = new AnnouncementController();
 
 
 Route::get('/', function() use ($postController) {
@@ -48,6 +50,11 @@ Route::get('/post/{id}', function($id) use ($postController) {
 
 //
 
+Route::get('/announcement', function() use ($announcementController) {
+    Middleware::auth();
+    $announcementController->index();
+});
+
 
 
 
@@ -69,6 +76,7 @@ Route::post('/register', function() use ($authController) {
     $authController->register();
 });
 
+// Give some space man im dizzy just looking at this
 
 
 Route::get('/forum', function() use ($discussionController) {

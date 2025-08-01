@@ -17,7 +17,7 @@
         <i class="bi bi-chat-dots-fill"></i>
         <span class="text-sm mt-1">Prodi</span>
       </a>
-      <a href="/gallery" class="hover:text-yellow-400 flex flex-col items-center <?= activeClass('/gallery') ?>">
+      <a href="/announcement" class="hover:text-yellow-400 flex flex-col items-center <?= activeClass('/announcement') ?>">
         <i class="bi bi-megaphone-fill"></i>
         <span class="text-sm mt-1">Pengumuman</span>
       </a>
@@ -65,7 +65,7 @@
   <div id="mobileMenu" class="hidden sm:hidden bg-purple-700 text-white px-6 py-4 space-y-4 text-xl">
     <a href="/" class="block hover:text-yellow-400 <?= activeClass('/') ?>"><i class="bi bi-house-door-fill me-2"></i> Home</a>
     <a href="/forum" class="block hover:text-yellow-400 <?= activeClass('/forum') ?>"><i class="bi bi-chat-dots-fill me-2"></i> Forum</a>
-    <a href="/gallery" class="block hover:text-yellow-400 <?= activeClass('/gallery') ?>"><i class="bi bi-images me-2"></i> Gallery</a>
+    <a href="/announcement" class="block hover:text-yellow-400 <?= activeClass('/announcement') ?>"><i class="bi bi-images me-2"></i> Gallery</a>
     <a href="/group-finder" class="block hover:text-yellow-400 <?= activeClass('/group-finder') ?>"><i class="bi bi-people-fill me-2"></i> Rekan Kelompok</a>
     <a href="/academic-calendar" class="block hover:text-yellow-400 <?= activeClass('/academic-calendar') ?>"><i class="bi bi-calendar-event-fill me-2"></i> Kalender Akademik</a>
     <a href="/learning-resources" class="block hover:text-yellow-400 <?= activeClass('/learning-resources') ?>"><i class="bi bi-journal-bookmark-fill me-2"></i> Sumber Belajar</a>
