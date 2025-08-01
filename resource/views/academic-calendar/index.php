@@ -19,7 +19,7 @@ if (!isset($_SESSION['user'])) {
 
     <?php include __DIR__ . "/../components/navbar.php"; ?>
 
-    <main class="max-w-4xl mx-auto py-8 px-4">
+    <main class="max-w-4xl mx-auto py-8 px-4 min-h-screen">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-purple-800">Kalender Akademik</h1>
             <?php if ($_SESSION['user']['status'] === 'admin' || $_SESSION['user']['status'] === 'dosen'): ?>

@@ -15,6 +15,26 @@ class DiscussionController extends Controller
         self::view('discussion/index', ['courses' => $courses]);
     }
 
+    public function storeProdi(){
+        $namaProdi = $_POST['name'] ?? '';
+        $deskripsiProdi = $_POST['description'] ?? '';
+
+        if (empty($namaProdi) || empty($deskripsiProdi)) {
+            $_SESSION['error'] = 'Nama mata kuliah tidak boleh kosong!';
+            header('Location: /forum');
+            exit;
+        }
+
+        Course::create([
+            'name' => $namaProdi,
+            'description' => $deskripsiProdi
+        ]);
+        $_SESSION['success'] = 'Mata kuliah berhasil ditambahkan!';
+        header('Location: /forum');
+        exit;
+        
+    }
+
     /**
      * Menampilkan daftar thread untuk mata kuliah tertentu
      */

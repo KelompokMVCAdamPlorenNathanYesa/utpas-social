@@ -75,11 +75,20 @@ Route::get('/forum', function() use ($discussionController) {
     Middleware::auth();
     $discussionController->index();
 });
+Route::post('/course/prodi', function() use ($discussionController) {
+    Middleware::auth();
+    $discussionController->storeProdi();
+});
+
 
 Route::get('/forum/$id', function($id) use ($discussionController) {
     Middleware::auth();
     $discussionController->showThreadsForCourse($id);
 });
+
+
+
+
 
 Route::get('/thread/$id', function($id) use ($discussionController) {
     Middleware::auth();

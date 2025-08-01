@@ -65,6 +65,15 @@ CREATE TABLE courses (
     name TEXT NOT NULL UNIQUE,
     description TEXT
 );
+CREATE TABLE announcements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    course_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);
+
 
 -- Tabel Discussion Threads
 CREATE TABLE discussion_threads (
@@ -113,8 +122,6 @@ CREATE TABLE academic_events (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 CREATE TABLE group_finder_posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
@@ -144,14 +151,11 @@ INSERT INTO learning_resources (title, description, type, file_path, link_url, c
 ('Materi Pertemuan 1 - PHP Dasar', 'Materi PDF untuk pertemuan pertama pemrograman web.', 'file', 'materi-pw1.pdf', NULL, 1, 1),
 ('Studi Kasus Linked List', 'Tautan ke artikel studi kasus implementasi linked list.', 'link', NULL, 'https://medium.com/linked-list-example', 2, 3),
 ('Tutorial Turunan Kalkulus', 'Tautan video YouTube tentang turunan dasar.', 'link', NULL, 'https://www.youtube.com/watch?v=turunan', 3, 2);
-=======
 -- Data awal (seeding) untuk Academic Events
 INSERT INTO academic_events (title, description, event_date, prodi) VALUES
 ('Deadline Tugas Besar PW I', 'Batas akhir pengumpulan proyek akhir Pemrograman Web I.', '2025-08-31 23:59:59', 'Informatika'),
 ('Ujian Akhir Semester Kalkulus I', 'UAS untuk mata kuliah Kalkulus I.', '2025-08-15 08:00:00', 'Informatika'),
 ('Seminar Nasional Ekonomi', 'Seminar terbuka untuk seluruh mahasiswa, khususnya prodi Manajemen.', '2025-08-20 10:00:00', 'Manajemen');
->>>>>>> 1a24370 (Kalender Akademik & Profile)
-=======
 ALTER TABLE academic_events ADD COLUMN submission_link TEXT;
 ALTER TABLE academic_events ADD COLUMN contact_info TEXT;
 
@@ -159,4 +163,3 @@ INSERT INTO academic_events (title, description, event_date, prodi, submission_l
 ('Kuis Bab 3 Struktur Data', 'Kuis online di platform E-learning kampus.', '2025-08-25 10:00:00', 'Informatika', 'https://elearning.utpas.ac.id/mod/quiz', 'Pengerjaan kuis pada jam mata kuliah.'),
 ('Pengumpulan Laporan Akhir Jaringan Komputer', 'Pengumpulan hardcopy laporan di meja dosen.', '2025-08-28 17:00:00', 'Informatika', NULL, 'Meja Dosen Budi, Ruang 301 Gedung FTI.'),
 ('Acara UKM Fotografi', 'Pameran hasil karya foto anggota UKM Fotografi.', '2025-09-01 10:00:00', NULL, NULL, 'Gedung Serbaguna Kampus.');
->>>>>>> 51f7ca3 (Kalender Akademik revisi link and contact)

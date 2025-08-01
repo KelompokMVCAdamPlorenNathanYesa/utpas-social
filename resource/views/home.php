@@ -166,13 +166,6 @@ if (!$userId) {
                         </button>
                     </form>
                 </div>
-
-                <div class="flex justify-end mt-4">
-                    <button onclick="openDetailModal(<?= $post->id ?>)"
-                        class="text-blue-600 hover:text-yellow-400 flex items-center gap-1 font-semibold">
-                        <i class="bi bi-arrow-right-circle"></i> Lihat Detail
-                    </button>
-                </div>
             </div>
         </div>
     <?php endforeach; ?>
@@ -325,7 +318,7 @@ function toggleDropdown(postId) {
     });
 }
 
-
+//good luck
 function openEditModal(postId, caption) {
     document.getElementById('editPostId').value = postId;
     document.getElementById('editCaption').value = caption;

@@ -22,9 +22,6 @@ if (!isset($_SESSION['user'])) {
     <main class="max-w-xl mx-auto py-8 px-4">
         <div class="bg-white rounded-2xl shadow-md p-6">
             <div class="flex flex-col items-center mb-6">
-                <img src="https://ui-avatars.com/api/?name=<?= urlencode($user['name']) ?>&size=128&background=random"
-                     class="w-32 h-32 rounded-full border-4 border-purple-400 mb-4">
-                <h1 class="text-3xl font-bold text-gray-900"><?= htmlspecialchars($user['name']) ?></h1>
                 <div class="flex flex-col items-center mb-6">
                     <img src="https://ui-avatars.com/api/?name=<?= urlencode($user['name']) ?>&size=128&background=random"
                         class="w-32 h-32 rounded-full border-4 border-purple-400 mb-4">

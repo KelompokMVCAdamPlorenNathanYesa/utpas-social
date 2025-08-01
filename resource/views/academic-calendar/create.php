@@ -4,7 +4,6 @@ if (!isset($_SESSION['user'])) {
     header('Location: /login');
     exit();
 }
-// Asumsi hak akses sudah dicek di controller
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +18,7 @@ if (!isset($_SESSION['user'])) {
 <body class="bg-gray-100 font-sans">
     <?php include __DIR__ . "/../components/navbar.php"; ?>
 
-    <main class="max-w-xl mx-auto py-8 px-4">
+    <main class="max-w-xl mx-auto py-8 px-4 min-h-screen">
         <h1 class="text-3xl font-bold mb-6 text-purple-800">Tambah Acara Akademik Baru</h1>
 
         <?php if (isset($_SESSION['error'])): ?>
