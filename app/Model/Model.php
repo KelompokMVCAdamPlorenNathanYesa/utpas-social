@@ -55,22 +55,22 @@ class Model {
         }
         return $objects;
     }
- public static function find($id) {
-        $instance = new static();
-        $stmt = self::$pdo->prepare("SELECT * FROM `{$instance->table}` WHERE id = :id LIMIT 1");
-        $stmt->execute(['id' => $id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    public static function find($id) {
+            $instance = new static();
+            $stmt = self::$pdo->prepare("SELECT * FROM `{$instance->table}` WHERE id = :id LIMIT 1");
+            $stmt->execute(['id' => $id]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Jika data ditemukan, buat objek baru
-        if ($row) {
-            $obj = new static();
-            foreach ($row as $key => $value) {
-                $obj->$key = $value;
+            // Jika data ditemukan, buat objek baru
+            if ($row) {
+                $obj = new static();
+                foreach ($row as $key => $value) {
+                    $obj->$key = $value;
+                }
+                return $obj;
             }
-            return $obj;
+            return null; // Jika tidak ditemukan, kembalikan null
         }
-        return null; // Jika tidak ditemukan, kembalikan null
-    }
 
     public static function where($column, $value) {
         $instance = new static();
@@ -87,7 +87,7 @@ class Model {
             $objects[] = $obj;
         }
         return $objects;
-}
+    }
 
     public static function create($data) {
         $instance = new static();
@@ -120,22 +120,22 @@ class Model {
     }
 
     // Relasi One-to-Many
- public function hasMany($relatedClass, $foreignKey, $localKey = 'id') {
-    $related = new $relatedClass;
-    $stmt = self::$pdo->prepare("SELECT * FROM `{$related->table}` WHERE `$foreignKey` = :value");
-    $stmt->execute(['value' => $this->$localKey]);
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function hasMany($relatedClass, $foreignKey, $localKey = 'id') {
+        $related = new $relatedClass;
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$related->table}` WHERE `$foreignKey` = :value");
+        $stmt->execute(['value' => $this->$localKey]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $objects = [];
-    foreach ($results as $row) {
-        $obj = new $relatedClass;
-        foreach ($row as $key => $value) {
-            $obj->$key = $value;
+        $objects = [];
+        foreach ($results as $row) {
+            $obj = new $relatedClass;
+            foreach ($row as $key => $value) {
+                $obj->$key = $value;
+            }
+            $objects[] = $obj;
         }
-        $objects[] = $obj;
+        return $objects;
     }
-    return $objects;
-}
     public function belongsTo($relatedClass, $foreignKey, $ownerKey = 'id') {
         $related = new $relatedClass;
         $stmt = self::$pdo->prepare("SELECT * FROM `{$related->table}` WHERE `$ownerKey` = :value LIMIT 1");

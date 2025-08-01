@@ -7,12 +7,14 @@ require_once "app/Controller/AuthController.php";
 require_once "app/Controller/DiscussionController.php";
 require_once "app/Controller/GroupFinderController.php"; 
 require_once "app/Controller/LearningResourceController.php";
-// Buat instance dari controller
+require_once "app/Controller/AcademicCalendarController.php";
+
 $postController = new PostController();
 $authController = new AuthController();
 $discussionController = new DiscussionController();
 $groupFinderController = new GroupFinderController();
 $learningResourceController = new LearningResourceController();
+$academicCalendarController = new AcademicCalendarController(); 
 
 
 Route::get('/', function() use ($postController) {
@@ -65,7 +67,20 @@ Route::get('/forum/$id/create', function($id) use ($discussionController) {
     Middleware::auth();
     $discussionController->createThreadForm($id);
 });
+Route::get('/profile', function() use ($authController) {
+    Middleware::auth();
+    $authController->showProfile();
+});
 
+Route::post('/profile/delete', function() use ($authController) {
+    Middleware::auth();
+    $authController->deleteAccount();
+});
+
+Route::get('/academic-calendar', function() use ($academicCalendarController) {
+    Middleware::auth();
+    $academicCalendarController->index();
+});
 Route::post('/forum/store', function() use ($discussionController) {
     Middleware::auth();
     $discussionController->storeThread();

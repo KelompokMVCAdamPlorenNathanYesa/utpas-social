@@ -22,6 +22,7 @@
         <span class="text-sm mt-1">Pengumuman</span>
       </a>
       <a href="/group-finder" class="hover:text-yellow-400 font-semibold p-2 rounded-lg">Rekan Kelompok</a>
+      <a href="/academic-calendar" class="hover:text-yellow-400 font-semibold p-2 rounded-lg">Kalender Akademik</a>
       <a href="/learning-resources" class="hover:text-yellow-400 font-semibold p-2 rounded-lg">Sumber Belajar</a>
     </div>
 

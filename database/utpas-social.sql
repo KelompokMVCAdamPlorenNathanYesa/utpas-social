@@ -101,9 +101,18 @@ CREATE TABLE learning_resources (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE SET NULL
 );
+-- Tabel Academic Events
+CREATE TABLE academic_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT,
+    event_date DATETIME NOT NULL,
+    prodi TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
--- Data awal (seeding) untuk Learning Resources
-INSERT INTO learning_resources (title, description, type, file_path, link_url, course_id, user_id) VALUES
-('Materi Pertemuan 1 - PHP Dasar', 'Materi PDF untuk pertemuan pertama pemrograman web.', 'file', 'materi-pw1.pdf', NULL, 1, 1),
-('Studi Kasus Linked List', 'Tautan ke artikel studi kasus implementasi linked list.', 'link', NULL, 'https://medium.com/linked-list-example', 2, 3),
-('Tutorial Turunan Kalkulus', 'Tautan video YouTube tentang turunan dasar.', 'link', NULL, 'https://www.youtube.com/watch?v=turunan', 3, 2);
+-- Data awal (seeding) untuk Academic Events
+INSERT INTO academic_events (title, description, event_date, prodi) VALUES
+('Deadline Tugas Besar PW I', 'Batas akhir pengumpulan proyek akhir Pemrograman Web I.', '2025-08-31 23:59:59', 'Informatika'),
+('Ujian Akhir Semester Kalkulus I', 'UAS untuk mata kuliah Kalkulus I.', '2025-08-15 08:00:00', 'Informatika'),
+('Seminar Nasional Ekonomi', 'Seminar terbuka untuk seluruh mahasiswa, khususnya prodi Manajemen.', '2025-08-20 10:00:00', 'Manajemen');
