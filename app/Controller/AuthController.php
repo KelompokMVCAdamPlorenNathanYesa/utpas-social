@@ -88,6 +88,38 @@ class AuthController extends Controller
         header('Location: /login');
         exit;
     }
+    public function showProfile()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $user = $_SESSION['user'];
+
+        self::view('profile', ['user' => $user]);
+    }
+    public function deleteAccount()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $userId = $_SESSION['user']['id'];
+
+        User::delete($userId);
+
+        session_destroy();
+        header('Location: /login');
+        exit;
+    }
 
     public function logout()
     {

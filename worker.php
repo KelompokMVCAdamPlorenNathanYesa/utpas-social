@@ -2,7 +2,6 @@
 
 class Route {
     public static function route($route, $handler) {
-        // Tambahkan .php jika handler berupa string file dan tidak ada ekstensi
         if (!is_callable($handler) && is_string($handler)) {
             if (strpos($handler, '.php') === false) {
                 $handler .= '.php';
