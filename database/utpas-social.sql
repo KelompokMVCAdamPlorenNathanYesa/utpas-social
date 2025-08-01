@@ -111,8 +111,10 @@ CREATE TABLE academic_events (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Data awal (seeding) untuk Academic Events
-INSERT INTO academic_events (title, description, event_date, prodi) VALUES
-('Deadline Tugas Besar PW I', 'Batas akhir pengumpulan proyek akhir Pemrograman Web I.', '2025-08-31 23:59:59', 'Informatika'),
-('Ujian Akhir Semester Kalkulus I', 'UAS untuk mata kuliah Kalkulus I.', '2025-08-15 08:00:00', 'Informatika'),
-('Seminar Nasional Ekonomi', 'Seminar terbuka untuk seluruh mahasiswa, khususnya prodi Manajemen.', '2025-08-20 10:00:00', 'Manajemen');
+ALTER TABLE academic_events ADD COLUMN submission_link TEXT;
+ALTER TABLE academic_events ADD COLUMN contact_info TEXT;
+
+INSERT INTO academic_events (title, description, event_date, prodi, submission_link, contact_info) VALUES
+('Kuis Bab 3 Struktur Data', 'Kuis online di platform E-learning kampus.', '2025-08-25 10:00:00', 'Informatika', 'https://elearning.utpas.ac.id/mod/quiz', 'Pengerjaan kuis pada jam mata kuliah.'),
+('Pengumpulan Laporan Akhir Jaringan Komputer', 'Pengumpulan hardcopy laporan di meja dosen.', '2025-08-28 17:00:00', 'Informatika', NULL, 'Meja Dosen Budi, Ruang 301 Gedung FTI.'),
+('Acara UKM Fotografi', 'Pameran hasil karya foto anggota UKM Fotografi.', '2025-09-01 10:00:00', NULL, NULL, 'Gedung Serbaguna Kampus.');

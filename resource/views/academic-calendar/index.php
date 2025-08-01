@@ -4,6 +4,7 @@ if (!isset($_SESSION['user'])) {
     header('Location: /login');
     exit();
 }
+// Asumsi variabel $events sudah di-set dari controller
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +21,20 @@ if (!isset($_SESSION['user'])) {
     <?php include __DIR__ . "/../components/navbar.php"; ?>
 
     <main class="max-w-4xl mx-auto py-8 px-4">
-        <h1 class="text-3xl font-bold mb-6 text-purple-800">Kalender Akademik</h1>
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-purple-800">Kalender Akademik</h1>
+            <?php if ($_SESSION['user']['status'] === 'admin'): ?>
+                <a href="/academic-calendar/create" class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-yellow-400 hover:text-purple-800 transition-colors duration-300">
+                    <i class="bi bi-plus-circle-fill mr-2"></i> Tambah Acara
+                </a>
+            <?php endif; ?>
+        </div>
+
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-4">
+                <?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
+            </div>
+        <?php endif; ?>
 
         <div class="space-y-6">
             <?php if (empty($events)): ?>
@@ -54,10 +68,48 @@ if (!isset($_SESSION['user'])) {
                         </div>
                         <p class="text-gray-800 mb-4"><?= htmlspecialchars($event->description) ?></p>
 
+                        <?php if (!empty($event->submission_link)): ?>
+                            <a href="<?= htmlspecialchars($event->submission_link) ?>" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-yellow-400 hover:text-purple-800">
+                                <i class="bi bi-link-45deg mr-2"></i> Kunjungi Tautan Pengumpulan
+                            </a>
+                        <?php endif; ?>
+
+                        <?php if (!empty($event->contact_info)): ?>
+                            <div class="mt-2 text-sm text-gray-600 flex items-center">
+                                <i class="bi bi-info-circle mr-1"></i>
+                                <span class="font-semibold mr-1">Kontak/Info:</span>
+                                <?php
+                                    // Cek jika formatnya email
+                                    if (filter_var($event->contact_info, FILTER_VALIDATE_EMAIL)) {
+                                        $link = "mailto:" . $event->contact_info;
+                                        $text = $event->contact_info;
+                                    }
+                                    // Jika tidak, cek jika formatnya adalah nomor telepon (misal: 0812...)
+                                    else if (preg_match('/^\d{10,13}$/', str_replace(' ', '', $event->contact_info))) {
+                                        $link = "https://wa.me/" . preg_replace('/^0/', '62', str_replace(' ', '', $event->contact_info));
+                                        $text = $event->contact_info;
+                                    }
+                                    else {
+                                        $link = null;
+                                        $text = $event->contact_info;
+                                    }
+                                ?>
+                                <?php if ($link): ?>
+                                    <a href="<?= htmlspecialchars($link) ?>" target="_blank" class="text-blue-600 hover:underline">
+                                        <?= htmlspecialchars($text) ?>
+                                    </a>
+                                <?php else: ?>
+                                    <span><?= htmlspecialchars($text) ?></span>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+
                         <?php if ($isOverdue): ?>
-                            <span class="inline-block px-3 py-1 text-sm font-semibold text-red-700 bg-red-100 rounded-full">
-                                Deadline Sudah Lewat
-                            </span>
+                            <div class="mt-4">
+                                <span class="inline-block px-3 py-1 text-sm font-semibold text-red-700 bg-red-100 rounded-full">
+                                    Deadline Sudah Lewat
+                                </span>
+                            </div>
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
