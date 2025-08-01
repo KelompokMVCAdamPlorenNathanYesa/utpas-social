@@ -20,7 +20,7 @@ if (!isset($_SESSION['user'])) {
 
     <?php include __DIR__ . "/../components/navbar.php"; ?>
 
-    <main class="max-w-4xl mx-auto py-8 px-4">
+    <main class="max-w-4xl mx-auto py-8 px-4 min-h-screen">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-purple-800">Pencarian Rekan Kelompok</h1>
             <a href="/group-finder/create" class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-yellow-400 hover:text-purple-800 transition-colors duration-300">

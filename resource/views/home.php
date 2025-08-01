@@ -1,9 +1,7 @@
 <?php
-// Pastikan sesi sudah dimulai
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-// Pastikan user sudah login
 $userId = $_SESSION['user']['id'] ?? null;
 if (!$userId) {
     header('Location: /login');
@@ -22,237 +20,282 @@ if (!$userId) {
 </head>
 <body class="bg-gray-100 font-sans">
 
-    <header>
-        <?php include __DIR__ . "/components/navbar.php"; ?>
-    </header>
+<header>
+    <?php include __DIR__ . "/components/navbar.php"; ?>
+</header>
 
-    <main class="max-w-4xl mx-auto py-8 px-4">
-
-        <div class="bg-white rounded-2xl shadow-md p-4 mb-8">
-            <div class="flex items-center gap-4 mb-3">
-                <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold flex items-center justify-center text-lg">
-                    <?= strtoupper(substr($_SESSION['user']['name'], 0, 1)); ?>
-                </div>
-                <button id="openPostModal" class="flex-1 text-left bg-gray-100 rounded-full px-4 py-2 text-gray-500 hover:bg-gray-200">
-                    Mau Tanya Sesuatu, <?= htmlspecialchars($_SESSION['user']['name']); ?>?
-                </button>
+<main class="max-w-4xl mx-auto py-8 px-4 min-h-screen">
+    <div class="bg-white rounded-2xl shadow-md p-4 mb-8">
+        <div class="flex items-center gap-4 mb-3">
+            <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold flex items-center justify-center text-lg">
+                <?= strtoupper(substr($_SESSION['user']['name'], 0, 1)); ?>
             </div>
-        </div>
-
-        <div id="postModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden items-center justify-center z-50 transition-opacity duration-300">
-            <div class="bg-white w-full max-w-lg rounded-xl shadow-lg p-6 relative">
-                <button id="closePostModal" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl">
-                    <i class="bi bi-x-circle-fill"></i>
-                </button>
-
-                <h2 class="text-xl font-bold mb-4 text-purple-800">Buat Postingan</h2>
-
-                <form action="/post/create" method="POST" enctype="multipart/form-data" id="postForm">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold flex items-center justify-center text-lg">
-                            <?= strtoupper(substr($_SESSION['user']['name'], 0, 1)); ?>
-                        </div>
-                        <span class="font-semibold"><?= htmlspecialchars($_SESSION['user']['name']); ?></span>
-                    </div>
-
-                    <textarea name="caption" rows="3" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4" placeholder="Apa yang Anda pikirkan?"></textarea>
-
-                    <label class="block text-purple-700 cursor-pointer mb-4 flex items-center gap-2">
-                        <i class="bi bi-image-fill text-xl"></i> Tambah Foto
-                        <input type="file" name="photos[]" id="photoInput" class="hidden" multiple accept="image/*">
-                    </label>
-
-                    <div id="previewContainer" class="grid grid-cols-3 gap-3 mb-4 hidden"></div>
-
-                    <div class="flex justify-end gap-3">
-                        <button type="button" id="closePostModalBtn" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">Batal</button>
-                        <button type="submit" class="px-6 py-2 rounded-lg bg-purple-700 text-white hover:bg-yellow-400 hover:text-purple-800">Post</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <?php foreach ($posts as $post): ?>
-            <div class="bg-white rounded-2xl shadow-md p-6 mb-6 hover:shadow-xl transition-all duration-300">
-                <div class="flex items-center mb-4">
-                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($post->user()->name) ?>&background=random"
-                         class="w-12 h-12 rounded-full border-2 border-blue-400 mr-4">
-                    <div>
-                        <h3 class="font-semibold text-lg text-gray-900">
-                            <?= htmlspecialchars($post->user()->name) ?>
-                        </h3>
-                        <p class="text-sm text-gray-500">
-                            @<?= htmlspecialchars($post->user()->username) ?>
-                        </p>
-                    </div>
-                </div>
-
-                <p class="text-gray-800 text-base mb-4 leading-relaxed">
-                    <?= htmlspecialchars($post->caption) ?>
-                </p>
-
-                <?php $photos = $post->photos(); ?>
-                <?php if (!empty($photos)): ?>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-                        <?php foreach ($photos as $photo): ?>
-                            <img src="/resource/uploads/<?= htmlspecialchars($photo->photo) ?>"
-                                 class="w-full h-40 object-cover rounded-xl shadow cursor-pointer post-image" />
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-
-                <div class="flex items-center justify-between text-sm text-gray-600 border-t pt-4">
-                    <div class="flex items-center gap-6">
-                        <button
-                            class="like-btn flex items-center gap-2 text-gray-700 hover:text-red-500 <?= $post->isLikedBy($userId) ? 'text-red-500' : '' ?>"
-                            data-post-id="<?= $post->id ?>">
-                            <i class="bi bi-heart-fill"></i> <span class="like-count"><?= $post->countLikes() ?></span>
-                        </button>
-
-                        <a href="/post?id=<?= $post->id ?>" class="flex items-center gap-2 text-gray-700 hover:text-blue-500">
-                            <i class="bi bi-chat-left-text-fill"></i> <?= count($post->comments()) ?> Komentar
-                        </a>
-                    </div>
-                    <a href="/post?id=<?= $post->id ?>" class="text-blue-600 hover:text-yellow-400 flex items-center gap-1 font-semibold">
-                        <i class="bi bi-arrow-right-circle"></i> Lihat Detail
-                    </a>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </main>
-
-    <?php include __DIR__ . "/components/footer.php"; ?>
-
-    <div id="imageModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-        <div class="relative max-w-4xl max-h-[90vh]">
-            <button id="closeImageModal" class="absolute top-4 right-4 text-white text-3xl hover:text-red-500">
-                <i class="bi bi-x-circle-fill"></i>
+            <button id="openPostModal" class="flex-1 text-left bg-gray-100 rounded-full px-4 py-2 text-gray-500 hover:bg-gray-200">
+                Mau Tanya Sesuatu, <?= htmlspecialchars($_SESSION['user']['name']); ?>?
             </button>
-            <img id="modalImage" src="" class="max-h-[90vh] max-w-full rounded-lg shadow-lg" alt="Full Image">
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const openBtn = document.getElementById('openPostModal');
-            const closeBtns = [document.getElementById('closePostModal'), document.getElementById('closePostModalBtn')];
-            const modal = document.getElementById('postModal');
-            const photoInput = document.getElementById('photoInput');
-            const previewContainer = document.getElementById('previewContainer');
+    <div id="postModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden items-center justify-center z-50 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-lg rounded-xl shadow-lg p-6 relative">
+            <button id="closePostModal" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl">
+                <i class="bi bi-x-circle-fill"></i>
+            </button>
 
-            // Open modal post
-            openBtn.addEventListener('click', () => {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            });
+            <h2 class="text-xl font-bold mb-4 text-purple-800">Buat Postingan</h2>
 
-            // Close modal post
-            closeBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    previewContainer.innerHTML = '';
-                    previewContainer.classList.add('hidden');
-                    photoInput.value = '';
-                });
-            });
+            <form action="/post/store" method="POST" enctype="multipart/form-data" id="postForm">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold flex items-center justify-center text-lg">
+                        <?= strtoupper(substr($_SESSION['user']['name'], 0, 1)); ?>
+                    </div>
+                    <span class="font-semibold"><?= htmlspecialchars($_SESSION['user']['name']); ?></span>
+                </div>
 
-            // Close modal when click outside
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    previewContainer.innerHTML = '';
-                    previewContainer.classList.add('hidden');
-                    photoInput.value = '';
-                }
-            });
+                <textarea name="caption" rows="3" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4" placeholder="Apa yang Anda pikirkan?"></textarea>
 
-            // Preview images
-            photoInput.addEventListener('change', (e) => {
-                const files = e.target.files;
-                previewContainer.innerHTML = '';
-                if (files.length > 0) {
-                    previewContainer.classList.remove('hidden');
-                    Array.from(files).forEach(file => {
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            const img = document.createElement('img');
-                            img.src = event.target.result;
-                            img.className = 'w-full h-32 object-cover rounded-lg shadow';
-                            previewContainer.appendChild(img);
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                } else {
-                    previewContainer.classList.add('hidden');
-                }
-            });
+                <label class="block text-purple-700 cursor-pointer mb-4 flex items-center gap-2">
+                    <i class="bi bi-image-fill text-xl"></i> Tambah Foto
+                    <input type="file" name="photos[]" id="photoInput" class="hidden" multiple accept="image/*">
+                </label>
 
-            // Modal Full Image
-            const imageModal = document.getElementById('imageModal');
-            const modalImage = document.getElementById('modalImage');
-            const closeImageModal = document.getElementById('closeImageModal');
-            const postImages = document.querySelectorAll('.post-image');
+                <div id="previewContainer" class="grid grid-cols-3 gap-3 mb-4 hidden"></div>
 
-            postImages.forEach(img => {
-                img.addEventListener('click', () => {
-                    modalImage.src = img.src;
-                    imageModal.classList.remove('hidden');
-                    imageModal.classList.add('flex');
-                });
-            });
+                <div class="flex justify-end gap-3">
+                    <button type="button" id="closePostModalBtn" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">Batal</button>
+                    <button type="submit" class="px-6 py-2 rounded-lg bg-purple-700 text-white hover:bg-yellow-400 hover:text-purple-800">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            closeImageModal.addEventListener('click', () => {
-                imageModal.classList.add('hidden');
-                imageModal.classList.remove('flex');
-            });
+    <!-- Post here  -->
+    <?php foreach ($posts as $post): ?>
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-6 hover:shadow-xl transition-all duration-300">
+            <div class="flex items-center mb-4 justify-between">
+                <div class="flex items-center">
+                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($post->user->name ?? 'User') ?>&background=random"
+                        class="w-12 h-12 rounded-full border-2 border-blue-400 mr-4">
+                    <div>
+                        <h3 class="font-semibold text-lg text-gray-900"><?= htmlspecialchars($post->user->name ?? 'User') ?></h3>
+                        <p class="text-sm text-gray-500">@<?= htmlspecialchars($post->user->username ?? '-') ?></p>
+                    </div>
+                </div>
+                <!-- Button  -->
+                <?php if ($post->user_id == $_SESSION['user']['id']): ?>
+                    <div class="relative inline-block text-left">
+                        <button type="button" class="text-gray-600 hover:text-gray-800 text-xl" onclick="toggleDropdown(<?= $post->id ?>)">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <div id="dropdown-<?= $post->id ?>" class="absolute right-0 z-10 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                            <button onclick="openEditModal(<?= $post->id ?>, '<?= htmlspecialchars(addslashes($post->caption)) ?>')" class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">Edit</button>
+                            <form action="/post/delete/<?= $post->id ?>" method="POST" onsubmit="return confirm('Yakin ingin menghapus postingan ini?');">
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
 
-            imageModal.addEventListener('click', (e) => {
-                if (e.target === imageModal) {
-                    imageModal.classList.add('hidden');
-                    imageModal.classList.remove('flex');
-                }
-            });
+            <p class="text-gray-800 text-base mb-4 leading-relaxed"><?= htmlspecialchars($post->caption) ?></p>
 
-            const likeButtons = document.querySelectorAll('.like-btn');
-            likeButtons.forEach(button => {
-                button.addEventListener('click', async (e) => {
-                    e.preventDefault();
+            <?php $photos = $post->photos(); ?>
+            <?php if (!empty($photos)): ?>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                    <?php foreach ($photos as $photo): ?>
+                        <img src="/resource/uploads/post/<?= htmlspecialchars($photo->photo) ?>"
+                            class="w-full h-40 object-cover rounded-xl shadow cursor-pointer post-image" />
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
 
-                    const postId = button.dataset.postId;
-                    const likeCountSpan = button.querySelector('.like-count');
+            <div class="border-t pt-4 mt-4 text-sm text-gray-600">
+                <!-- Komentar -->
+                <div class="mt-4">
+                    <?php $comments = $post->comments(); ?>
+                    <?php if (!empty($comments)): ?>
+                        <div class="space-y-4 mb-4">
+                            <?php foreach ($comments as $comment): ?>
+                                <div class="flex items-start gap-3">
+                                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($comment->user()->name ?? 'U') ?>&background=random"
+                                        class="w-9 h-9 rounded-full border border-gray-300">
+                                    <div class="bg-gray-100 p-3 rounded-xl shadow text-sm w-full">
+                                        <p class="font-semibold text-purple-700"><?= htmlspecialchars($comment->user()->name ?? 'User') ?></p>
+                                        <p class="text-gray-800"><?= htmlspecialchars($comment->comment) ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
 
-                    try {
-                        const response = await fetch(`/post/like/${postId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        });
+                    <!-- Form Komentar -->
+                    <form action="/post/comment" method="POST" class="flex items-start gap-3 mt-2">
+                        <input type="hidden" name="post_id" value="<?= $post->id ?>">
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['user']['name']) ?>&background=random"
+                            class="w-9 h-9 rounded-full border border-gray-300">
+                        <textarea name="comment" rows="1" required placeholder="Tulis komentar..."
+                            class="flex-1 resize-none border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"></textarea>
+                        <button type="submit" class="bg-purple-600 hover:bg-yellow-400 hover:text-purple-800 text-white rounded-lg px-4 py-2 text-sm font-medium transition">
+                            Kirim
+                        </button>
+                    </form>
+                </div>
 
-                        if (response.ok) {
-                            const data = await response.json();
-                            if (data.success) {
-                                likeCountSpan.textContent = data.newLikeCount;
-                                if (data.isLiked) {
-                                    button.classList.add('text-red-500');
-                                } else {
-                                    button.classList.remove('text-red-500');
-                                }
-                            }
-                        } else {
-                            const errorData = await response.json();
-                            alert('Error: ' + errorData.message);
-                        }
-                    } catch (error) {
-                        console.error('Fetch error:', error);
-                        alert('Terjadi kesalahan saat memproses permintaan.');
-                    }
-                });
-            });
+                <div class="flex justify-end mt-4">
+                    <button onclick="openDetailModal(<?= $post->id ?>)"
+                        class="text-blue-600 hover:text-yellow-400 flex items-center gap-1 font-semibold">
+                        <i class="bi bi-arrow-right-circle"></i> Lihat Detail
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    <?php endforeach; ?>
+</main>
+
+<?php include __DIR__ . "/components/footer.php"; ?>
+
+<div id="imageModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+    <div class="relative max-w-4xl max-h-[90vh]">
+        <button id="closeImageModal" class="absolute top-4 right-4 text-white text-3xl hover:text-red-500">
+            <i class="bi bi-x-circle-fill"></i>
+        </button>
+        <img id="modalImage" src="" class="max-h-[90vh] max-w-full rounded-lg shadow-lg" alt="Full Image">
+    </div>
+</div>
+
+<div id="editPostModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-white w-full max-w-lg rounded-xl shadow-lg p-6 relative">
+        <button onclick="closeEditModal()" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl">
+            <i class="bi bi-x-circle-fill"></i>
+        </button>
+
+        <h2 class="text-xl font-bold mb-4 text-purple-800">Edit Postingan</h2>
+
+        <form action="/post/update" method="POST">
+            <input type="hidden" name="post_id" id="editPostId">
+            <textarea name="caption" id="editCaption" rows="3" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4"></textarea>
+
+            <div class="flex justify-end gap-3">
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">Batal</button>
+                <button type="submit" class="px-6 py-2 rounded-lg bg-purple-700 text-white hover:bg-yellow-400 hover:text-purple-800">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const openBtn = document.getElementById('openPostModal');
+    const closeBtns = [document.getElementById('closePostModal'), document.getElementById('closePostModalBtn')];
+    const modal = document.getElementById('postModal');
+    const photoInput = document.getElementById('photoInput');
+    const previewContainer = document.getElementById('previewContainer');
+
+    openBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    });
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            previewContainer.innerHTML = '';
+            previewContainer.classList.add('hidden');
+            photoInput.value = '';
         });
-    </script>
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            previewContainer.innerHTML = '';
+            previewContainer.classList.add('hidden');
+            photoInput.value = '';
+        }
+    });
+
+    photoInput.addEventListener('change', (e) => {
+        const files = e.target.files;
+        previewContainer.innerHTML = '';
+        if (files.length > 0) {
+            previewContainer.classList.remove('hidden');
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.className = 'w-full h-32 object-cover rounded-lg shadow';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        } else {
+            previewContainer.classList.add('hidden');
+        }
+    });
+
+    const postImages = document.querySelectorAll('.post-image');
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeImageModal = document.getElementById('closeImageModal');
+
+    postImages.forEach(img => {
+        img.addEventListener('click', () => {
+            modalImage.src = img.src;
+            imageModal.classList.remove('hidden');
+            imageModal.classList.add('flex');
+        });
+    });
+
+    closeImageModal.addEventListener('click', () => {
+        imageModal.classList.add('hidden');
+        imageModal.classList.remove('flex');
+    });
+
+    imageModal.addEventListener('click', (e) => {
+        if (e.target === imageModal) {
+            imageModal.classList.add('hidden');
+            imageModal.classList.remove('flex');
+        }
+    });
+});
+
+function toggleDropdown(postId) {
+    const dropdown = document.getElementById(`dropdown-${postId}`);
+    dropdown.classList.toggle('hidden');
+
+    // Tutup dropdown lain
+    document.querySelectorAll('[id^="dropdown-"]').forEach(el => {
+        if (el.id !== `dropdown-${postId}`) el.classList.add('hidden');
+    });
+
+    const button = event.target.closest('button'); // tombol yang diklik
+
+    document.addEventListener('click', function handler(e) {
+        // Jangan tutup kalau klik masih di dalam dropdown atau tombol titik tiga
+        if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+            dropdown.classList.add('hidden');
+            document.removeEventListener('click', handler);
+        }
+    });
+}
+
+
+function openEditModal(postId, caption) {
+    document.getElementById('editPostId').value = postId;
+    document.getElementById('editCaption').value = caption;
+    document.getElementById('editPostModal').classList.remove('hidden');
+    document.getElementById('editPostModal').classList.add('flex');
+}
+
+function closeEditModal() {
+    document.getElementById('editPostModal').classList.add('hidden');
+    document.getElementById('editPostModal').classList.remove('flex');
+}
+
+</script>
 </body>
 </html>

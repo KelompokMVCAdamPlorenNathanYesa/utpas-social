@@ -151,4 +151,46 @@ class Model {
         }
         return null;
     }
+    public static function with($relations) {
+        $instance = new static();
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$instance->table}`");
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $objects = [];
+        foreach ($rows as $row) {
+            $obj = new static();
+            foreach ($row as $key => $value) {
+                $obj->$key = $value;
+            }
+
+            // Handle relasi eager loading
+            foreach ((array)$relations as $relation) {
+                if (method_exists($obj, $relation)) {
+                    $obj->$relation = $obj->$relation(); 
+                }
+            }
+
+            $objects[] = $obj;
+        }
+        return $objects;
+    }
+    public function save() {
+        $data = [];
+        foreach ($this->columns as $column) {
+            if (isset($this->$column)) {
+                $data[$column] = $this->$column;
+            }
+        }
+
+        if (isset($this->id)) {
+            static::update($this->id, $data);
+        } else {
+            $this->id = static::create($data);
+        }
+    }
+
+    
+
+
 }

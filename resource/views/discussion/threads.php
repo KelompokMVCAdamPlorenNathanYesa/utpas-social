@@ -20,7 +20,7 @@ if (!isset($_SESSION['user'])) {
 
     <?php include __DIR__ . "/../components/navbar.php"; ?>
 
-    <main class="max-w-4xl mx-auto py-8 px-4">
+    <main class="max-w-4xl mx-auto py-8 px-4 min-h-screen">
         <a href="/forum" class="text-purple-600 hover:text-purple-800 mb-4 inline-block"><i class="bi bi-arrow-left"></i> Kembali ke Forum</a>
         <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold text-purple-800">Forum: <?= htmlspecialchars($course->name) ?></h1>

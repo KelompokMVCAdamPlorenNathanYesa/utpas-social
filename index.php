@@ -1,6 +1,5 @@
 <?php
 
-// Pastikan file-file yang dibutuhkan sudah terhubung
 require_once "worker.php";
 require_once "app/Controller/PostController.php";
 require_once "app/Controller/AuthController.php";
@@ -20,6 +19,35 @@ Route::get('/', function() use ($postController) {
     $postController->index();
 });
 
+Route::post('/post/store', function() use ($postController) {
+    Middleware::auth();
+    $postController->store();
+});
+Route::post('/post/comment', function() use ($postController) {
+    Middleware::auth();
+    $postController->storeComment();
+});
+
+Route::post('/post/delete/$id', function($id) use ($postController) {
+    Middleware::auth();
+    $postController->delete($id);
+});
+Route::post('/post/update', function () use ($postController) {
+    Middleware::auth();
+    $postController->update();
+});
+
+
+Route::get('/post/{id}', function($id) use ($postController) {
+    Middleware::auth();
+    $postController->show($id);
+});
+
+
+//
+
+
+
 
 Route::get('/login', function() use ($authController) {
     Middleware::guest();
@@ -38,13 +66,6 @@ Route::post('/register', function() use ($authController) {
     Middleware::guest();
     $authController->register();
 });
-
-Route::post('/post/like/$id', function($id) use ($postController) {
-    Middleware::auth();
-    $postController->toggleLike($id);
-});
-
-// 
 
 
 
@@ -114,4 +135,5 @@ Route::get('/learning-resources/download/$id', function($id) use ($learningResou
 });
 
 Route::get('/404', 'views/404.php');
+
 ?>

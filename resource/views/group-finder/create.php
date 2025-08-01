@@ -20,7 +20,7 @@ if (!isset($_SESSION['user'])) {
 
     <?php include __DIR__ . "/../components/navbar.php"; ?>
 
-    <main class="max-w-xl mx-auto py-8 px-4">
+    <main class="max-w-xl mx-auto py-8 px-4 min-h-screen">
         <h1 class="text-3xl font-bold mb-6 text-purple-800">Buat Postingan Pencarian Kelompok</h1>
 
         <?php if (isset($_SESSION['error'])): ?>
