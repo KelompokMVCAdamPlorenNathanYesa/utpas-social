@@ -4,7 +4,7 @@ require_once __DIR__ . '/Controller.php';
 
 class AcademicCalendarController extends Controller
 {
- 
+
     public function index()
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -18,6 +18,59 @@ class AcademicCalendarController extends Controller
         $userProdi = $_SESSION['user']['prodi'];
 
         $events = AcademicEvent::where('prodi', $userProdi);
+
         self::view('academic-calendar/index', ['events' => $events]);
+    }
+
+  
+    public function createForm()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user']) || ($_SESSION['user']['status'] !== 'admin' && $_SESSION['user']['status'] !== 'dosen')) {
+            $_SESSION['error'] = 'Anda tidak memiliki hak akses untuk halaman ini!';
+            header('Location: /academic-calendar');
+            exit;
+        }
+
+        self::view('academic-calendar/create');
+    }
+
+    public function store()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user']) || ($_SESSION['user']['status'] !== 'admin' && $_SESSION['user']['status'] !== 'dosen')) {
+            header('Location: /academic-calendar');
+            exit;
+        }
+
+        $title = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $eventDate = trim($_POST['event_date'] ?? '');
+        $prodi = trim($_POST['prodi'] ?? '');
+        $submissionLink = trim($_POST['submission_link'] ?? '');
+        $contactInfo = trim($_POST['contact_info'] ?? '');
+
+        if (empty($title) || empty($eventDate)) {
+            $_SESSION['error'] = 'Judul dan tanggal acara wajib diisi!';
+            header('Location: /academic-calendar/create');
+            exit;
+        }
+
+        AcademicEvent::create([
+            'title' => $title,
+            'description' => $description,
+            'event_date' => $eventDate,
+            'prodi' => $prodi,
+            'submission_link' => $submissionLink,
+            'contact_info' => $contactInfo
+        ]);
+
+        $_SESSION['success'] = 'Acara baru berhasil ditambahkan!';
+        header('Location: /academic-calendar');
+        exit;
     }
 }
