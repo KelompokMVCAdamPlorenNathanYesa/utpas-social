@@ -63,6 +63,11 @@ class AuthController extends Controller
             header('Location: /register');
             exit;
         }
+        if (User::findByEmail($email)) {
+            $_SESSION['error'] = 'Email sudah Terdaftar!';
+            header('Location: /register');
+            exit;
+        }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 

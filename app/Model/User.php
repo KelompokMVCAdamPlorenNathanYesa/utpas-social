@@ -20,4 +20,11 @@ class User extends Model{
         $stmt->execute(['username' => $username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public static function findByEmail($email)
+    {
+        $instance = new static();
+        $stmt = self::$pdo->prepare("SELECT * FROM `{$instance->table}` WHERE email = :email LIMIT 1");
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
