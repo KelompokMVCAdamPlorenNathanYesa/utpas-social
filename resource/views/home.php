@@ -71,6 +71,13 @@ if (!$userId) {
 
     <!-- Post here  -->
     <?php foreach ($posts as $post): ?>
+        <?php
+            $comments = $post->comments();
+            $totalComments = count($comments);
+            $maxCommentsToShow = 5;
+            $showMore = $totalComments > $maxCommentsToShow;
+            $visibleComments = array_slice($comments, 0, $maxCommentsToShow);
+        ?>
         <div class="bg-white rounded-2xl shadow-md p-6 mb-6 hover:shadow-xl transition-all duration-300">
             <div class="flex items-center mb-4 justify-between">
                 <div class="flex items-center">
@@ -81,7 +88,6 @@ if (!$userId) {
                         <p class="text-sm text-gray-500">@<?= htmlspecialchars($post->user->username ?? '-') ?></p>
                     </div>
                 </div>
-                <!-- Button  -->
                 <?php if ($post->user_id == $_SESSION['user']['id']): ?>
                     <div class="relative inline-block text-left">
                         <button type="button" class="text-gray-600 hover:text-gray-800 text-xl" onclick="toggleDropdown(<?= $post->id ?>)">
@@ -112,10 +118,9 @@ if (!$userId) {
             <div class="border-t pt-4 mt-4 text-sm text-gray-600">
                 <!-- Komentar -->
                 <div class="mt-4">
-                    <?php $comments = $post->comments(); ?>
-                    <?php if (!empty($comments)): ?>
-                        <div class="space-y-4 mb-4">
-                            <?php foreach ($comments as $comment): ?>
+                    <?php if (!empty($visibleComments)): ?>
+                        <div class="space-y-4 mb-4" id="comments-container-<?= $post->id ?>">
+                            <?php foreach ($visibleComments as $comment): ?>
                                 <div class="flex items-start gap-3">
                                     <img src="https://ui-avatars.com/api/?name=<?= urlencode($comment->user()->name ?? 'U') ?>&background=random"
                                         class="w-9 h-9 rounded-full border border-gray-300">
@@ -126,6 +131,27 @@ if (!$userId) {
                                 </div>
                             <?php endforeach; ?>
                         </div>
+                    <?php endif; ?>
+
+                    <?php if ($showMore): ?>
+                        <div id="hidden-comments-<?= $post->id ?>" class="space-y-4 mb-4 hidden">
+                            <?php foreach (array_slice($comments, $maxCommentsToShow) as $comment): ?>
+                                <div class="flex items-start gap-3">
+                                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($comment->user()->name ?? 'U') ?>&background=random"
+                                        class="w-9 h-9 rounded-full border border-gray-300">
+                                    <div class="bg-gray-100 p-3 rounded-xl shadow text-sm w-full">
+                                        <p class="font-semibold text-purple-700"><?= htmlspecialchars($comment->user()->name ?? 'User') ?></p>
+                                        <p class="text-gray-800"><?= htmlspecialchars($comment->comment) ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <button onclick="toggleComments(<?= $post->id ?>)"
+                            class="text-sm text-blue-600 hover:text-yellow-500 mt-2"
+                            id="toggle-btn-<?= $post->id ?>">
+                            Tampilkan semua komentar (<?= $totalComments ?>)
+                        </button>
                     <?php endif; ?>
 
                     <!-- Form Komentar -->
@@ -147,10 +173,11 @@ if (!$userId) {
                         <i class="bi bi-arrow-right-circle"></i> Lihat Detail
                     </button>
                 </div>
-
             </div>
         </div>
     <?php endforeach; ?>
+
+
 </main>
 
 <?php include __DIR__ . "/components/footer.php"; ?>
@@ -185,6 +212,21 @@ if (!$userId) {
 </div>
 
 <script>
+
+function toggleComments(postId) {
+    const hidden = document.getElementById('hidden-comments-' + postId);
+    const toggleBtn = document.getElementById('toggle-btn-' + postId);
+
+    if (hidden.classList.contains('hidden')) {
+        hidden.classList.remove('hidden');
+        toggleBtn.textContent = 'Sembunyikan komentar';
+    } else {
+        hidden.classList.add('hidden');
+        toggleBtn.textContent = 'Tampilkan semua komentar';
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const openBtn = document.getElementById('openPostModal');
     const closeBtns = [document.getElementById('closePostModal'), document.getElementById('closePostModalBtn')];
