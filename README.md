@@ -1,3 +1,13 @@
+# Install Lewat Docker
+```
+docker-compose up --build
+```
+- Buka Di Browser
+```
+http://localhost:8080/
+```
+
+
 # Install 
 - Clone Repo
 ```
