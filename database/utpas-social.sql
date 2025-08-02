@@ -135,32 +135,56 @@ CREATE TABLE group_finder_posts (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-
-
--- Seed awal (kamu bisa sesuaikan ID user & course sesuai data nyata)
-INSERT INTO users (id, name, username, email, status, password, unique_number, fakultas, prodi) VALUES
-(1, 'Adam Wahyu', 'adam', 'adam@example.com', 'active', 'password_hash_1', 'UN001', 'FTI', 'TI'),
-(2, 'Ayu Lestari', 'ayu', 'ayu@example.com', 'active', 'password_hash_2', 'UN002', 'FTI', 'SI'),
-(3, 'Budi Santoso', 'budi', 'budi@example.com', 'active', 'password_hash_3', 'UN003', 'FTI', 'MI');
-
 INSERT INTO courses (id, name, description) VALUES
+-- IT
 (1, 'Pemrograman Web', 'Belajar dasar-dasar PHP & HTML'),
 (2, 'Struktur Data', 'Mengenal struktur data dasar seperti linked list'),
-(3, 'Matematika Kalkulus', 'Turunan dan integral dasar');
+(3, 'Matematika Kalkulus', 'Turunan dan integral dasar'),
+(4, 'Algoritma dan Pemrograman', 'Dasar-dasar algoritma dan logika pemrograman'),
+(5, 'Basis Data', 'Konsep database relasional dan SQL'),
+(6, 'Jaringan Komputer', 'Pengenalan jaringan dan protokol TCP/IP'),
+(7, 'Pemrograman Berorientasi Objek', 'Belajar OOP dengan Java'),
+(8, 'Sistem Operasi', 'Konsep multitasking, proses, dan manajemen memori'),
+(9, 'Keamanan Siber', 'Dasar keamanan jaringan dan enkripsi'),
+(10, 'Machine Learning Dasar', 'Konsep supervised dan unsupervised learning'),
+(11, 'Cloud Computing', 'Pengenalan komputasi awan dan layanan seperti AWS'),
 
-INSERT INTO learning_resources (title, description, type, file_path, link_url, course_id, user_id) VALUES
-('Materi Pertemuan 1 - PHP Dasar', 'Materi PDF untuk pertemuan pertama pemrograman web.', 'file', 'materi-pw1.pdf', NULL, 1, 1),
-('Studi Kasus Linked List', 'Tautan ke artikel studi kasus implementasi linked list.', 'link', NULL, 'https://medium.com/linked-list-example', 2, 3),
-('Tutorial Turunan Kalkulus', 'Tautan video YouTube tentang turunan dasar.', 'link', NULL, 'https://www.youtube.com/watch?v=turunan', 3, 2);
--- Data awal (seeding) untuk Academic Events
-INSERT INTO academic_events (title, description, event_date, prodi) VALUES
-('Deadline Tugas Besar PW I', 'Batas akhir pengumpulan proyek akhir Pemrograman Web I.', '2025-08-31 23:59:59', 'Informatika'),
-('Ujian Akhir Semester Kalkulus I', 'UAS untuk mata kuliah Kalkulus I.', '2025-08-15 08:00:00', 'Informatika'),
-('Seminar Nasional Ekonomi', 'Seminar terbuka untuk seluruh mahasiswa, khususnya prodi Manajemen.', '2025-08-20 10:00:00', 'Manajemen');
+-- Manajemen
+(12, 'Manajemen Sumber Daya Manusia', 'Strategi mengelola tenaga kerja di organisasi'),
+(13, 'Manajemen Pemasaran', 'Strategi pemasaran dan perilaku konsumen'),
+(14, 'Manajemen Keuangan', 'Dasar-dasar akuntansi dan laporan keuangan'),
+(15, 'Manajemen Operasi', 'Mengelola proses produksi dan distribusi barang'),
+(16, 'Perilaku Organisasi', 'Studi tentang perilaku manusia dalam organisasi'),
+(17, 'Kepemimpinan dan Pengambilan Keputusan', 'Teori kepemimpinan dan pengambilan keputusan efektif'),
+(18, 'Etika Bisnis', 'Etika dan tanggung jawab sosial dalam bisnis'),
+(19, 'Kewirausahaan', 'Dasar-dasar memulai dan mengelola bisnis'),
+(20, 'Manajemen Proyek', 'Teknik merencanakan, melaksanakan, dan mengendalikan proyek'),
+(21, 'Strategi Bisnis', 'Analisis SWOT dan perencanaan strategis perusahaan'),
+
+-- DKV
+(22, 'Dasar Desain Grafis', 'Pengenalan prinsip desain grafis dan komposisi visual'),
+(23, 'Tipografi', 'Dasar-dasar pemilihan dan penggunaan huruf'),
+(24, 'Ilustrasi Digital', 'Teknik menggambar digital dengan perangkat lunak'),
+(25, 'Fotografi Dasar', 'Teknik dasar pengambilan gambar dan komposisi'),
+(26, 'Animasi 2D', 'Dasar pembuatan animasi menggunakan frame dan keyframe'),
+(27, 'Desain UI/UX', 'Prinsip antarmuka pengguna dan pengalaman pengguna'),
+(28, 'Branding dan Identitas Visual', 'Membangun citra dan karakter visual merek'),
+(29, 'Desain Media Interaktif', 'Merancang media interaktif berbasis web atau aplikasi'),
+(30, 'Seni Rupa Kontemporer', 'Kajian seni rupa modern dan aplikasinya dalam desain'),
+(31, 'Motion Graphic', 'Membuat animasi bergerak untuk keperluan presentasi dan promosi'),
+
+-- Bahasa Inggris
+(32, 'Basic English Grammar', 'Struktur kalimat, tenses, dan parts of speech'),
+(33, 'English Conversation', 'Latihan berbicara dalam bahasa Inggris sehari-hari'),
+(34, 'Listening Comprehension', 'Meningkatkan pemahaman terhadap percakapan berbahasa Inggris'),
+(35, 'Academic Writing', 'Menulis esai dan laporan dalam bahasa Inggris formal'),
+(36, 'Reading for Understanding', 'Teknik membaca untuk memahami teks akademik'),
+(37, 'TOEFL Preparation', 'Persiapan menghadapi ujian TOEFL'),
+(38, 'Pronunciation Practice', 'Latihan pengucapan dan intonasi bahasa Inggris'),
+(39, 'Business English', 'Bahasa Inggris untuk keperluan bisnis dan korespondensi'),
+(40, 'English for Tourism', 'Kosakata dan percakapan untuk dunia pariwisata'),
+(41, 'Creative Writing', 'Menulis cerita fiksi dan non-fiksi dalam bahasa Inggris');
+
 ALTER TABLE academic_events ADD COLUMN submission_link TEXT;
 ALTER TABLE academic_events ADD COLUMN contact_info TEXT;
 
-INSERT INTO academic_events (title, description, event_date, prodi, submission_link, contact_info) VALUES
-('Kuis Bab 3 Struktur Data', 'Kuis online di platform E-learning kampus.', '2025-08-25 10:00:00', 'Informatika', 'https://elearning.utpas.ac.id/mod/quiz', 'Pengerjaan kuis pada jam mata kuliah.'),
-('Pengumpulan Laporan Akhir Jaringan Komputer', 'Pengumpulan hardcopy laporan di meja dosen.', '2025-08-28 17:00:00', 'Informatika', NULL, 'Meja Dosen Budi, Ruang 301 Gedung FTI.'),
-('Acara UKM Fotografi', 'Pameran hasil karya foto anggota UKM Fotografi.', '2025-09-01 10:00:00', NULL, NULL, 'Gedung Serbaguna Kampus.');

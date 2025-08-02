@@ -24,7 +24,6 @@ session_start();
             </div>
         <?php endif; ?>
 
-
         <?php if ($_SESSION['user']['status'] == 'admin'): ?>
             <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-purple-800">Pilih Mata Kuliah</h1>
