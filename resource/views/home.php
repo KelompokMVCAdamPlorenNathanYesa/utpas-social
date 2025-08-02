@@ -30,7 +30,7 @@ if (!$userId) {
             <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold flex items-center justify-center text-lg">
                 <?= strtoupper(substr($_SESSION['user']['name'], 0, 1)); ?>
             </div>
-            <button id="openPostModal" class="flex-1 text-left bg-gray-100 rounded-full px-4 py-2 text-gray-500 hover:bg-gray-200">
+            <button id="openPostModal" class="flex-1 text-left bg-gray-100 rounded-full px-4 py-2 text-gray-500 hover:bg-gray-200 cursor-pointer transition">
                 Mau Tanya Sesuatu, <?= htmlspecialchars($_SESSION['user']['name']); ?>?
             </button>
         </div>
@@ -38,7 +38,7 @@ if (!$userId) {
 
     <div id="postModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden items-center justify-center z-50 transition-opacity duration-300">
         <div class="bg-white w-full max-w-lg rounded-xl shadow-lg p-6 relative">
-            <button id="closePostModal" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl">
+            <button id="closePostModal" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl cursor-pointer">
                 <i class="bi bi-x-circle-fill"></i>
             </button>
 
@@ -62,8 +62,8 @@ if (!$userId) {
                 <div id="previewContainer" class="grid grid-cols-3 gap-3 mb-4 hidden"></div>
 
                 <div class="flex justify-end gap-3">
-                    <button type="button" id="closePostModalBtn" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">Batal</button>
-                    <button type="submit" class="px-6 py-2 rounded-lg bg-purple-700 text-white hover:bg-yellow-400 hover:text-purple-800">Post</button>
+                    <button type="button" id="closePostModalBtn" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 cursor-pointer">Batal</button>
+                    <button type="submit" class="px-6 py-2 rounded-lg bg-purple-700 text-white hover:bg-yellow-400 hover:text-purple-800 cursor-pointer">Post</button>
                 </div>
             </form>
         </div>

@@ -38,10 +38,10 @@
 
     <div class="hidden sm:block relative">
       <button id="profileBtn" class="focus:outline-none flex items-center space-x-3">
-        <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold text-lg flex items-center justify-center">
+        <div class="h-12 w-12 rounded-full bg-yellow-400 text-purple-800 font-bold text-lg flex items-center justify-center cursor-pointer">
           <?= strtoupper(substr($_SESSION['user']['name'], 0, 1)); ?>
         </div>
-        <i class="bi bi-caret-down-fill text-lg"></i>
+        <i class="bi bi-caret-down-fill text-lg cursor-pointer"></i>
       </button>
       <div id="profileDropdown" class="hidden absolute right-0 mt-4 w-48 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden text-lg">
         <a href="/profile" class="block px-4 py-3 hover:bg-gray-100 flex items-center">

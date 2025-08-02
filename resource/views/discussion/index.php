@@ -14,8 +14,17 @@ session_start();
 <body class="bg-gray-100 font-sans">
 
     <?php include __DIR__ . "/../components/navbar.php"; ?>
+    
 
     <main class="max-w-4xl mx-auto py-8 px-4 min-h-screen">
+
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-4" id="flash-message">
+                <?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
+            </div>
+        <?php endif; ?>
+
+
         <?php if ($_SESSION['user']['status'] == 'admin'): ?>
             <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-purple-800">Pilih Mata Kuliah</h1>
@@ -84,6 +93,6 @@ session_start();
         });
     });
     </script>
-
+<script src="../../resource/js/flashMsg.js"></script>
 </body>
 </html>

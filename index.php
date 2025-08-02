@@ -42,19 +42,38 @@ Route::post('/post/update', function () use ($postController) {
 });
 
 
-Route::get('/post/{id}', function($id) use ($postController) {
-    Middleware::auth();
-    $postController->show($id);
-});
-
-
 //
 
 Route::get('/announcement', function() use ($announcementController) {
     Middleware::auth();
     $announcementController->index();
 });
+Route::get('/announcement/create', function() use ($announcementController) {
+    Middleware::admin();
+    $announcementController->createForm();
+});
+Route::post('/announcement/store', function() use ($announcementController) {
+    Middleware::admin();
+    $announcementController->store();
+});
+Route::get('/announcement/show/$id', function($id) use ($announcementController) {
+    Middleware::auth();
+    $announcementController->show($id);
+});
 
+Route::get('/announcement/edit/$id', function($id) use ($announcementController) {
+    Middleware::admin();
+    $announcementController->edit($id);
+});
+Route::post('/announcement/update', function() use ($announcementController) {
+    Middleware::admin();
+    $announcementController->update();
+});
+
+Route::post('/announcement/delete/$id', function($id) use ($announcementController) {
+    Middleware::admin();
+    $announcementController->delete($id);
+});
 
 
 
@@ -154,6 +173,10 @@ Route::get('/academic-calendar/create', function() use ($academicCalendarControl
     Middleware::auth();
     $academicCalendarController->createForm();
 });
+Route::post('/academic-calendar/store', function() use ($academicCalendarController) {
+    Middleware::auth();
+    $academicCalendarController->store();
+});
 Route::get('/learning-resources/create', function() use ($learningResourceController) {
     Middleware::auth();
     $learningResourceController->createForm();
@@ -169,6 +192,8 @@ Route::get('/learning-resources/download/$id', function($id) use ($learningResou
     $learningResourceController->download($id);
 });
 
-Route::get('/404', 'views/404.php');
-
-?>
+if (empty($GLOBALS['route_matched'])) {
+    http_response_code(404);
+    include __DIR__ . '/resource/views/404.php';
+    exit;
+}

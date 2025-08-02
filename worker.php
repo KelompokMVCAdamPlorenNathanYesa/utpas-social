@@ -1,6 +1,7 @@
 <?php
 
 class Route {
+    
     public static function route($route, $handler) {
         if (!is_callable($handler) && is_string($handler)) {
             if (strpos($handler, '.php') === false) {
@@ -107,6 +108,14 @@ class Middleware
         session_start();
         if (isset($_SESSION['user'])) {
             header('Location: /');
+            exit;
+        }
+    }
+    public static function admin()
+    {
+        session_start();
+        if (!isset($_SESSION['user']) || $_SESSION['user']['status'] !== 'admin') {
+            header('Location: /resource/views/403.php');
             exit;
         }
     }

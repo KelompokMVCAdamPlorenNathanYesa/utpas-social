@@ -70,6 +70,7 @@ CREATE TABLE announcements (
     course_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     content TEXT,
+    event_date DATETIME NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );

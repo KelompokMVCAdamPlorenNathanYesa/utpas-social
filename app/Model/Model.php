@@ -93,12 +93,23 @@ class Model {
         $instance = new static();
         $columns = array_keys($data);
         $placeholders = array_map(fn($col) => ":$col", $columns);
+
         $sql = "INSERT INTO `{$instance->table}` (" . implode(", ", $columns) . ")
                 VALUES (" . implode(", ", $placeholders) . ")";
+
         $stmt = self::$pdo->prepare($sql);
-        $stmt->execute($data);
-        return self::$pdo->lastInsertId();
+
+        try {
+            if ($stmt->execute($data)) {
+                return self::$pdo->lastInsertId(); // success
+            }
+        } catch (PDOException $e) {
+            error_log("Create failed: " . $e->getMessage()); 
+        }
+
+        return null; 
     }
+
 
     public static function update($id, $data) {
         $instance = new static();
@@ -190,7 +201,13 @@ class Model {
         }
     }
 
-    
-
+    public static function orderBy($column, $direction = 'asc') {
+        $instance = new static();
+        $sql = "SELECT * FROM `{$instance->table}` ORDER BY `$column` $direction";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
+        return $results;
+    }
 
 }

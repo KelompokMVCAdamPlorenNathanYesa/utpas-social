@@ -30,12 +30,12 @@ if (!isset($_SESSION['user'])) {
         </div>
 
         <?php if (isset($_SESSION['success'])): ?>
-            <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-4">
+            <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-4" id="flash-message">
                 <?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
             </div>
         <?php endif; ?>
         <?php if (isset($_SESSION['error'])): ?>
-            <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-4">
+            <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-4" id="flash-message">
                 <?= htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?>
             </div>
         <?php endif; ?>
@@ -98,6 +98,6 @@ if (!isset($_SESSION['user'])) {
     </main>
 
     <?php include __DIR__ . "/../components/footer.php"; ?>
-
+<script src="../../resource/js/flashMsg.js"></script>
 </body>
 </html>

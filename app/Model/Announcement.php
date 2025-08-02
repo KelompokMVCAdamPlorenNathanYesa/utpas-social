@@ -8,7 +8,8 @@ class Announcement extends Model {
     public $course_id;
     public $title;
     public $content;
-    public $created_at;
+    public $created_at; 
+    public $event_date;
 
     public function course(){
         return $this->belongsTo('Course', 'course_id');
