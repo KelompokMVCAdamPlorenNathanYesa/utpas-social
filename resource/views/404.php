@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
-    <?php include __DIR__ . "/components/navbar.php"; ?>
 
     <main class="bg-gray-100 flex items-center justify-center min-h-screen px-4">
         <div class="text-center">
@@ -21,6 +19,5 @@
             </a>
         </div>
     </main>
-    <?php include __DIR__ . "/components/footer.php"; ?>
 </body>
 </html>

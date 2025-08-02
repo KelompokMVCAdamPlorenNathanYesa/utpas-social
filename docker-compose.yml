@@ -2,9 +2,29 @@ version: '3.8'
 
 services:
   app:
-    build: .
-    ports:
-      - "8000:80"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: utpas-social-app
     volumes:
-      - ./app:/var/www/html
+      - .:/var/www/html
+    networks:
+      - utpas-social
     restart: unless-stopped
+
+  nginx:
+    image: nginx:latest
+    container_name: utpas-social-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - utpas-social
+
+networks:
+  utpas-social:
+    driver: bridge

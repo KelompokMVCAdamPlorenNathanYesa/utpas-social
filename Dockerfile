@@ -1,30 +1,24 @@
-FROM php:8.3-apache
+# Gunakan base image PHP dengan FPM
+FROM php:8.2-fpm
 
-# Install dependencies
+# Install ekstensi dan tools
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     unzip \
     git \
     curl \
     sqlite3 \
-    && docker-php-ext-install pdo pdo_sqlite sqlite3
+    && docker-php-ext-install pdo pdo_sqlite
 
-# Install Node.js (LTS)
+# Install Node
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
-# Copy aplikasi ke direktori Apache
-COPY ./app /var/www/html
+# Salin semua file ke dalam container
+COPY . /var/www/html
 
-# Copy entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Ganti permission
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
-
-# Set permission
-RUN chown -R www-data:www-data /var/www/html
-
-# Jalankan entrypoint saat container start
-ENTRYPOINT ["/entrypoint.sh"]
