@@ -47,6 +47,12 @@
         <a href="/profile" class="block px-4 py-3 hover:bg-gray-100 flex items-center">
           <i class="bi bi-person me-2"></i> Lihat Profil
         </a>
+        <?php if ($_SESSION['user']['status'] === 'admin'): ?>
+        <a href="/admin/user" class="block px-4 py-3 hover:bg-gray-100 flex items-center">
+          <i class="bi bi-people-fill me-2"></i> User
+        </a>
+        <?php endif; ?>
+        
         <form action="/logout" method="GET">
           <button type="submit" class="w-full text-left px-4 py-3 hover:bg-gray-100 flex items-center">
             <i class="bi bi-box-arrow-right me-2"></i> Logout
