@@ -83,6 +83,10 @@ Route::get('/admin/user', function() use ($userController) {
     Middleware::admin();
     $userController->index();
 });
+Route::post('/admin/user/change-status', function() use ($userController) {
+    Middleware::admin();
+    $userController->changeStatus();
+});
 
 
 Route::get('/login', function() use ($authController) {
