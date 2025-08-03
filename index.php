@@ -8,8 +8,10 @@ require_once "app/Controller/GroupFinderController.php";
 require_once "app/Controller/LearningResourceController.php";
 require_once "app/Controller/AcademicCalendarController.php";
 require_once "app/Controller/AnnouncementController.php";
+require_once "app/Controller/UserController.php";
 
 $postController = new PostController();
+$userController = new UserController();
 $authController = new AuthController();
 $discussionController = new DiscussionController();
 $groupFinderController = new GroupFinderController();
@@ -65,16 +67,22 @@ Route::get('/announcement/edit/$id', function($id) use ($announcementController)
     Middleware::admin();
     $announcementController->edit($id);
 });
-Route::post('/announcement/update', function() use ($announcementController) {
-    Middleware::admin();
-    $announcementController->update();
-});
+// Route::post('/announcement/update', function() use ($announcementController) {
+//     Middleware::admin();
+//     $announcementController->update();
+// });
 
 Route::post('/announcement/delete/$id', function($id) use ($announcementController) {
     Middleware::admin();
     $announcementController->delete($id);
 });
 
+
+//
+Route::get('/admin/user', function() use ($userController) {
+    Middleware::admin();
+    $userController->index();
+});
 
 
 Route::get('/login', function() use ($authController) {
