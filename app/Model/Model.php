@@ -27,6 +27,7 @@ class Model {
         $dsn = "sqlite:$dbPath";
         self::$pdo = new PDO($dsn);
         self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        self::$pdo->exec('PRAGMA foreign_keys = ON;');
     }
 
     protected function loadColumns() {
@@ -130,7 +131,6 @@ class Model {
         return self::$pdo;
     }
 
-    // Relasi One-to-Many
     public function hasMany($relatedClass, $foreignKey, $localKey = 'id') {
         $related = new $relatedClass;
         $stmt = self::$pdo->prepare("SELECT * FROM `{$related->table}` WHERE `$foreignKey` = :value");

@@ -24,7 +24,7 @@ class LearningResourceController extends Controller
         self::view('learning-resources/create', ['courses' => $courses]);
     }
 
-    public function store()
+        public function store()
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -41,6 +41,14 @@ class LearningResourceController extends Controller
         $courseId = $_POST['course_id'] ?? null;
         $filePath = null;
         $linkUrl = null;
+
+        // --- VALIDASI DI SINI ---
+        if (empty($title)) {
+            $_SESSION['error'] = 'Judul sumber belajar wajib diisi!';
+            header('Location: /learning-resources/create');
+            exit;
+        }
+        // --- AKHIR VALIDASI ---
 
         if ($type === 'file' && isset($_FILES['file'])) {
             $targetDir = __DIR__ . "/../../resource/uploads/";
@@ -62,12 +70,7 @@ class LearningResourceController extends Controller
             }
         }
 
-        if (empty($title)) {
-            $_SESSION['error'] = 'Judul sumber belajar wajib diisi!';
-            header('Location: /learning-resources/create');
-            exit;
-        }
-
+        // --- PROSES UPLOAD/SIMPAN DI SINI ---
         LearningResource::create([
             'title' => $title,
             'description' => $description,
@@ -83,7 +86,7 @@ class LearningResourceController extends Controller
         exit;
     }
 
-    public function download($resourceId)
+        public function download($resourceId)
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -111,7 +114,7 @@ class LearningResourceController extends Controller
             flush();
             readfile($filePath);
             exit;
-        } else {
+      } else {
             $_SESSION['error'] = 'File tidak ditemukan.';
             header('Location: /learning-resources');
             exit;

@@ -17,11 +17,24 @@ class AcademicCalendarController extends Controller
 
         $userProdi = $_SESSION['user']['prodi'];
 
-        $events = AcademicEvent::where('prodi', $userProdi);
+        $academicEventInstance = new AcademicEvent(); 
+
+        $pdo = AcademicEvent::getPdo();
+        $stmt = $pdo->prepare("SELECT * FROM academic_events WHERE prodi = :prodi OR prodi IS NULL ORDER BY event_date");
+        $stmt->execute(['prodi' => $userProdi]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $events = [];
+        foreach ($results as $row) {
+            $obj = new AcademicEvent();
+            foreach ($row as $key => $value) {
+                $obj->$key = $value;
+            }
+            $events[] = $obj;
+        }
 
         self::view('academic-calendar/index', ['events' => $events]);
     }
-
   
     public function createForm()
     {

@@ -35,7 +35,6 @@ if (!isset($_SESSION['user'])) {
                     <label for="title" class="block text-sm font-medium text-gray-700">Judul Sumber Belajar</label>
                     <input type="text" id="title" name="title" required class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring-purple-500 p-2">
                 </div>
-
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (opsional)</label>
                     <textarea id="description" name="description" rows="3" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring-purple-500 p-2"></textarea>
