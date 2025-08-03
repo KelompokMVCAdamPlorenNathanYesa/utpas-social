@@ -67,10 +67,10 @@ Route::get('/announcement/edit/$id', function($id) use ($announcementController)
     Middleware::admin();
     $announcementController->edit($id);
 });
-// Route::post('/announcement/update', function() use ($announcementController) {
-//     Middleware::admin();
-//     $announcementController->update();
-// });
+Route::post('/announcement/update', function() use ($announcementController) {
+    Middleware::admin();
+    $announcementController->update();
+});
 
 Route::post('/announcement/delete/$id', function($id) use ($announcementController) {
     Middleware::admin();

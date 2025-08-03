@@ -18,7 +18,8 @@ unset($_SESSION['error']);
 
 <main class="min-h-screen bg-gray-50 p-6">
 
-    <form action="/announcement/update/<?= $announcement->id ?>" method="POST" class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-lg space-y-4">
+    <form action="/announcement/update/" method="POST" class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-lg space-y-4">
+        <input type="hidden" name="id" value="<?= $announcement->id ?>">
         <?php if ($error): ?>
             <div class="bg-red-600 text-white p-4 rounded mb-6" id="flash-message">
                 <?= $error ?>

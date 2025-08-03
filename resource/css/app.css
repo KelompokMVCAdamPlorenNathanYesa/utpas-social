@@ -673,9 +673,6 @@
   .bg-\[\#0A2146\] {
     background-color: #0A2146;
   }
-  .bg-\[var\(--primary-color\)\] {
-    background-color: var(--primary-color);
-  }
   .bg-\[var\(--secondary-color\)\] {
     background-color: var(--secondary-color);
   }
@@ -918,9 +915,6 @@
   .text-green-700 {
     color: var(--color-green-700);
   }
-  .text-green-800 {
-    color: var(--color-green-800);
-  }
   .text-purple-200 {
     color: var(--color-purple-200);
   }
@@ -941,9 +935,6 @@
   }
   .text-red-700 {
     color: var(--color-red-700);
-  }
-  .text-red-800 {
-    color: var(--color-red-800);
   }
   .text-white {
     color: var(--color-white);
@@ -1123,13 +1114,6 @@
       }
     }
   }
-  .hover\:text-blue-800 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-blue-800);
-      }
-    }
-  }
   .hover\:text-gray-800 {
     &:hover {
       @media (hover: hover) {
@@ -1148,13 +1132,6 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-red-500);
-      }
-    }
-  }
-  .hover\:text-red-800 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-red-800);
       }
     }
   }

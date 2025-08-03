@@ -75,4 +75,35 @@ class AnnouncementController extends Controller{
             'announcement' => $announcement,
             'courses' => $courses]);
     }
+    public function update()
+    {
+        $id = $_POST['id'] ?? null; 
+        $title = $_POST['title'] ?? '';
+        $content = $_POST['content'] ?? '';
+        $eventDate = $_POST['event_date'] ?? '';
+        $courseId = $_POST['course_id'] ?? null;
+
+        if (!$id || !$title || !$content || !$eventDate || !$courseId) {
+            $_SESSION['error'] = "Semua field wajib diisi!";
+            header("Location: /announcement/edit/$id");
+            exit;
+        }
+
+        $announcement = Announcement::find($id);
+        if (!$announcement) {
+            $_SESSION['error'] = "Pengumuman tidak ditemukan!";
+            header("Location: /announcement");
+            exit;
+        }
+
+        $announcement->title = $title;
+        $announcement->content = $content;
+        $announcement->event_date = $eventDate;
+        $announcement->course_id = $courseId;
+        $announcement->save();
+
+        header("Location: /announcement");
+        exit;
+    }
+
 }
