@@ -1,4 +1,7 @@
-<?php session_start();?>
+<?php session_start();
+
+unset($_SESSION['error']);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +16,7 @@
 
     <?php include __DIR__ . "/../components/navbar.php"; ?>
 
-    <main class="max-w-4xl mx-auto py-8 px-4">
+    <main class="max-w-4xl mx-auto py-8 px-4 min-h-screen">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-purple-800">Sumber Belajar</h1>
             <a href="/learning-resources/create" class="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-yellow-400 hover:text-purple-800 transition-colors duration-300">
@@ -22,12 +25,12 @@
         </div>
 
         <?php if (isset($_SESSION['success'])): ?>
-            <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-4">
+            <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-4" id="flash-message">
                 <?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
             </div>
         <?php endif; ?>
         <?php if (isset($_SESSION['error'])): ?>
-            <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-4">
+            <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-4" id="flash-message">
                 <?= htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?>
             </div>
         <?php endif; ?>
@@ -71,6 +74,7 @@
     </main>
 
     <?php include __DIR__ . "/../components/footer.php"; ?>
+    <script src="../../resource/js/flashMsg.js"></script>
 
 </body>
 </html>

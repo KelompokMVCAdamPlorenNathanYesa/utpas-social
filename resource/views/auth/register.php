@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+$error = $_SESSION['error'] ?? null;
+$success = $_SESSION['success'] ?? null;
+// // unset($_SESSION['error']);
+// unset($error, $success); 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +36,13 @@
 
         <!-- Form Register -->
         <form method="POST" action="/register" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Pesan Error -->
+            <?php if ($error): ?>
+                <div class="bg-red-600 text-white p-3 rounded mb-4 text-sm text-center" id="flash-message">
+                    <?= $error ?>
+                </div>
+            <?php endif; ?>
+
             <input type="text" name="name" placeholder="Nama Lengkap"
                 class="col-span-2 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
             <input type="text" name="username" placeholder="Username"
@@ -62,5 +78,7 @@
     </div>
 </div>
 
+
+<script src="../../resource/js/flashMsg.js"></script>
 </body>
 </html>

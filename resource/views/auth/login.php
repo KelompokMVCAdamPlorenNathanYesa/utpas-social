@@ -1,8 +1,9 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 $error = $_SESSION['error'] ?? null;
+$success = $_SESSION['success'] ?? null;
 // unset($_SESSION['error']);
-unset($_SESSION['error'], $_SESSION['success']); 
+unset($error, $success); 
 
 ?>
 

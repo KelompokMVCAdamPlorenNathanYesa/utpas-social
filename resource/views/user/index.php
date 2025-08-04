@@ -1,3 +1,6 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +47,7 @@
           <td class="px-4 py-3"><?= htmlspecialchars($user->username) ?></td>
           <td class="px-4 py-3"><?= htmlspecialchars($user->email) ?></td>
           <td class="px-4 py-3">
+            <?php if ($_SESSION['user']['id'] !== $user->id): ?>
             <form action="/admin/user/change-status" method="POST">
               <input type="hidden" name="id" value="<?= $user->id ?>">
               <select name="status" onchange="this.form.submit()" class="bg-gray-100 border border-gray-300 text-sm rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
@@ -52,6 +56,9 @@
                 <option value="dosen" <?= $user->status === 'dosen' ? 'selected' : '' ?>>Dosen</option>
               </select>
             </form>
+            <?php else: ?>
+            <span class="text-indigo-900 font-bold"><?= $user->status ?></span>
+            <?php endif; ?>
           </td>
           <td class="px-4 py-3"><?= htmlspecialchars($user->unique_number) ?></td>
           <td class="px-4 py-3"><?= htmlspecialchars($user->fakultas) ?></td>
